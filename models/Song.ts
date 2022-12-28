@@ -23,20 +23,25 @@ export interface Song {
 }
 
 export interface MsPlayedByYears {
-  years: {
-    [key: number]: {
-      months: {
-        [key: number]: {
-          days: {
-            [key: number]: number
-          }
-          totalMsPlayed: number
-        }
-      },
-      totalMsPlayed: number
-    }
-  }
+  nodes: {
+    [key: number]: MsPlayedByYears
+  },
   totalMsPlayed: number
+
+  // years: {
+  //   [key: number]: {
+  //     months: {
+  //       [key: number]: {
+  //         days: {
+  //           [key: number]: number
+  //         }
+  //         totalMsPlayed: number
+  //       }
+  //     },
+  //     totalMsPlayed: number
+  //   }
+  // }
+  // totalMsPlayed: number
 }
 
 export interface WrappedResult {

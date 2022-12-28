@@ -6,7 +6,7 @@ const fileContents = ref();
 
 const wrappedResults = reactive<WrappedResult>({
   msPlayedByYears: {
-    years: {},
+    nodes: {},
     totalMsPlayed: 0
   },
   trackPlayCounts: {}
@@ -28,32 +28,40 @@ watch(fileContents, (contents: Song[]) => {
     let day = datetime.getDate();
     
     // the year doesn't exist. create it.
-    if (!wrappedResults.msPlayedByYears.years[year]) {
-      wrappedResults.msPlayedByYears.years[year] = {
-        months: {},
+    if (!wrappedResults.msPlayedByYears.nodes[year]) {
+      wrappedResults.msPlayedByYears.nodes[year] = {
+        nodes: {},
         totalMsPlayed: song.ms_played
       };
     } else {
-      wrappedResults.msPlayedByYears.years[year].totalMsPlayed += song.ms_played;
+      wrappedResults.msPlayedByYears.nodes[year].totalMsPlayed += song.ms_played;
     }
 
     // the month doesn't exist.
-    if (!wrappedResults.msPlayedByYears.years[year].months[month]) {
-      wrappedResults.msPlayedByYears.years[year].months[month] = {
-        days: {},
+    if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month]) {
+      wrappedResults.msPlayedByYears.nodes[year].nodes[month] = {
+        nodes: {},
         totalMsPlayed: song.ms_played
       }
     } else {
-      wrappedResults.msPlayedByYears.years[year].months[month].totalMsPlayed += song.ms_played;
+      wrappedResults.msPlayedByYears.nodes[year].nodes[month].totalMsPlayed += song.ms_played;
     }
 
     // if day doesn't exist
-    if (!wrappedResults.msPlayedByYears.years[year].months[month].days[day]) {
-      wrappedResults.msPlayedByYears.years[year]
-        .months[month]
-        .days[day] = song.ms_played
+    if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month].nodes[day]) {
+      wrappedResults.msPlayedByYears
+        .nodes[year]
+        .nodes[month]
+        .nodes[day] = {
+          nodes: {},
+          totalMsPlayed: song.ms_played
+        }
     } else {
-      wrappedResults.msPlayedByYears.years[year].months[month].days[day] += song.ms_played;
+      wrappedResults.msPlayedByYears
+        .nodes[year]
+        .nodes[month]
+        .nodes[day]
+        .totalMsPlayed += song.ms_played;
     }
   }
 
@@ -77,7 +85,7 @@ watch(fileContents, (contents: Song[]) => {
       <div class="">
         <p class="section-head">Dates with how much you've listened.</p>
         
-        <StatsTrackDate :dates="wrappedResults.msPlayedByYears" />
+        <StatsTrackDate :dateNodes="wrappedResults.msPlayedByYears" />
       </div>
     </template>
     <p v-else>Start Uploading your Spotify data!</p>
