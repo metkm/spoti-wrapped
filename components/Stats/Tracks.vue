@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import { Song } from '~~/models/Song';
+
 const { tracks } = defineProps<{
-  tracks: { [key: string]: number }
+  tracks: {
+    [key: string]: {
+      song: Song,
+      count: number
+    }
+  }
 }>();
 
 let values = Object.entries(tracks);
 values.sort(([_, a], [__, b]) => {
-  return b - a
+  return b.count - a.count
 });
 
 values = values.slice(0, 50);
@@ -13,7 +20,11 @@ values = values.slice(0, 50);
 
 <template>
   <div v-for="[key, value] in values" class="track">
-    <p>{{ key }}</p>
-    <p>{{ value }} <span>times</span></p>
+    <div>
+      <p>{{ key }}</p>
+      <p class="text-xs">{{ value.song.master_metadata_album_artist_name }}</p>
+    </div>
+
+    <p>{{ value.count }} <span>times</span></p>
   </div>
 </template>

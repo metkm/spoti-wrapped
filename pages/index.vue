@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Song, WrappedResult } from "../models/Song";
 
-const isDone = ref(false);
+type Status = "loaded" | "loading" | "waiting";
+
+const loadStatus = ref<Status>("waiting");
 const fileContents = ref();
 
 const wrappedResults = reactive<WrappedResult>({
@@ -13,14 +15,22 @@ const wrappedResults = reactive<WrappedResult>({
   trackPlayCounts: {}
 });
 
-watch(fileContents, (contents: Song[]) => {
+watch(fileContents, async (contents: Song[]) => {
+  loadStatus.value = "loading";
+
   for (const song of contents) {
     wrappedResults.msPlayedByYears.totalMsPlayed += song.ms_played;
 
-    if (song.master_metadata_track_name && !wrappedResults.trackPlayCounts.hasOwnProperty(song.master_metadata_track_name)) {
-      wrappedResults.trackPlayCounts[song.master_metadata_track_name] = 0;
+    if (
+      song.master_metadata_track_name && 
+      !wrappedResults.trackPlayCounts.hasOwnProperty(song.master_metadata_track_name)
+    ) {
+      wrappedResults.trackPlayCounts[song.master_metadata_track_name] = {
+        song,
+        count: 0
+      };
     } else if (song.master_metadata_track_name) {
-      wrappedResults.trackPlayCounts[song.master_metadata_track_name] += 1;
+      wrappedResults.trackPlayCounts[song.master_metadata_track_name].count += 1;
     }
 
     let datetime = new Date(song.ts);
@@ -69,7 +79,7 @@ watch(fileContents, (contents: Song[]) => {
     }
   }
 
-  isDone.value = true;
+  loadStatus.value = "loaded";
 })
 </script>
 
@@ -77,7 +87,13 @@ watch(fileContents, (contents: Song[]) => {
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
     <UploadButton v-model="fileContents" />
 
-    <template v-if="isDone">
+    <template v-if="loadStatus === 'waiting'">
+      <p>Start Loading Your Spotify Data!</p>
+    </template>
+    <template v-else-if="loadStatus === 'loading'">
+      <p>Loading...</p>
+    </template>
+    <template v-else>
       <div class="section">
         <p class="section-head">How many times you've listened to same tracks?</p>
 
@@ -90,7 +106,6 @@ watch(fileContents, (contents: Song[]) => {
         <StatsTrackDate :dateNodes="wrappedResults.msPlayedByYears" />
       </div>
     </template>
-    <p v-else>Start Uploading your Spotify data!</p>
   </main>
 </template>
 
