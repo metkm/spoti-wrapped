@@ -24,7 +24,7 @@ defineProps<{
         <div>
           <p class="text-lg font-bold">{{ value.name }} {{ key }}</p>
           <p class="text-sm text-neutral-600">
-            Total of {{ Math.round(value.totalMsPlayed / 1000 / 60) }} minutes
+            Total of {{ msToMinutes(value.totalMsPlayed) }} minutes
           </p>
         </div>
 

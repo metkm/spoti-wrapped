@@ -101,7 +101,10 @@ watch(fileContents, async (contents: Song[]) => {
       </div>
 
       <div class="section">
-        <p class="section-head">Dates with how much you've listened.</p>
+        <p class="section-head">
+          Dates with how much you've listened. Total of 
+          {{ msToMinutes(wrappedResults.msPlayedByYears.totalMsPlayed) }} minutes
+        </p>
         
         <StatsTrackDate :dateNodes="wrappedResults.msPlayedByYears" />
       </div>

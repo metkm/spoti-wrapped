@@ -15,7 +15,7 @@ values.sort(([_, a], [__, b]) => {
   return b.count - a.count
 });
 
-values = values.slice(0, 50);
+values = values.slice(0, 30);
 </script>
 
 <template>
