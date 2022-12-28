@@ -10,6 +10,7 @@ const wrappedResults = reactive<WrappedResult>({
   msPlayedByYears: {
     nodes: {},
     name: "Year",
+    songsListened: [],
     totalMsPlayed: 0
   },
   trackPlayCounts: {}
@@ -21,10 +22,9 @@ watch(fileContents, async (contents: Song[]) => {
   for (const song of contents) {
     wrappedResults.msPlayedByYears.totalMsPlayed += song.ms_played;
 
-    if (
-      song.master_metadata_track_name && 
-      !wrappedResults.trackPlayCounts.hasOwnProperty(song.master_metadata_track_name)
-    ) {
+    if (!song.master_metadata_track_name) continue;
+
+    if (!wrappedResults.trackPlayCounts.hasOwnProperty(song.master_metadata_track_name)) {
       wrappedResults.trackPlayCounts[song.master_metadata_track_name] = {
         song,
         count: 0
@@ -43,21 +43,25 @@ watch(fileContents, async (contents: Song[]) => {
       wrappedResults.msPlayedByYears.nodes[year] = {
         nodes: {},
         name: "Year",
+        songsListened: [],
         totalMsPlayed: song.ms_played
       };
     } else {
       wrappedResults.msPlayedByYears.nodes[year].totalMsPlayed += song.ms_played;
+      wrappedResults.msPlayedByYears.nodes[year].songsListened.push(song);
     }
 
     // the month doesn't exist.
     if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month]) {
       wrappedResults.msPlayedByYears.nodes[year].nodes[month] = {
         nodes: {},
+        songsListened: [],
         name: "Month",
         totalMsPlayed: song.ms_played
       }
     } else {
       wrappedResults.msPlayedByYears.nodes[year].nodes[month].totalMsPlayed += song.ms_played;
+      wrappedResults.msPlayedByYears.nodes[year].nodes[month].songsListened.push(song);
     }
 
     // if day doesn't exist
@@ -67,6 +71,7 @@ watch(fileContents, async (contents: Song[]) => {
         .nodes[month]
         .nodes[day] = {
           nodes: {},
+          songsListened: [],
           name: "Day",
           totalMsPlayed: song.ms_played
         }
@@ -76,9 +81,16 @@ watch(fileContents, async (contents: Song[]) => {
         .nodes[month]
         .nodes[day]
         .totalMsPlayed += song.ms_played;
+
+      wrappedResults.msPlayedByYears
+        .nodes[year]
+        .nodes[month]
+        .nodes[day]
+        .songsListened.push(song);
     }
   }
 
+  
   loadStatus.value = "loaded";
 })
 </script>

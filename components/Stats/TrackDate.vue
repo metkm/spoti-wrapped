@@ -26,6 +26,11 @@ defineProps<{
           <p class="text-sm text-neutral-600">
             Total of {{ msToMinutes(value.totalMsPlayed) }} minutes
           </p>
+
+          <div class="border rounded-lg p-2 opacity-70">
+            <p class="text-xs">The song you've listened to most.</p>
+            <p>{{ mostFrequentSong(value.songsListened)[0].master_metadata_track_name }}</p>
+          </div>
         </div>
 
         <StatsShowMore v-if="value.name !== 'Day'" v-model="hidePercentage" :nodes="value" />

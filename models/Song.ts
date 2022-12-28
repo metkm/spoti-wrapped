@@ -26,6 +26,7 @@ export interface MsPlayedByYears {
   nodes: {
     [key: number]: MsPlayedByYears
   },
+  songsListened: Song[],
   name: string,
   totalMsPlayed: number
 }
