@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MsPlayedByYears } from '~~/models/Song';
 
-const props = defineProps<{
+defineProps<{
   nodes: MsPlayedByYears,
   modelValue: any
 }>();

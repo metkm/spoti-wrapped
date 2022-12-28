@@ -84,7 +84,7 @@ watch(fileContents, (contents: Song[]) => {
         <StatsTracks :tracks="wrappedResults.trackPlayCounts" />
       </div>
 
-      <div class="">
+      <div class="section">
         <p class="section-head">Dates with how much you've listened.</p>
         
         <StatsTrackDate :dateNodes="wrappedResults.msPlayedByYears" />
