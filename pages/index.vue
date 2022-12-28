@@ -7,6 +7,7 @@ const fileContents = ref();
 const wrappedResults = reactive<WrappedResult>({
   msPlayedByYears: {
     nodes: {},
+    name: "Year",
     totalMsPlayed: 0
   },
   trackPlayCounts: {}
@@ -31,6 +32,7 @@ watch(fileContents, (contents: Song[]) => {
     if (!wrappedResults.msPlayedByYears.nodes[year]) {
       wrappedResults.msPlayedByYears.nodes[year] = {
         nodes: {},
+        name: "Year",
         totalMsPlayed: song.ms_played
       };
     } else {
@@ -41,6 +43,7 @@ watch(fileContents, (contents: Song[]) => {
     if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month]) {
       wrappedResults.msPlayedByYears.nodes[year].nodes[month] = {
         nodes: {},
+        name: "Month",
         totalMsPlayed: song.ms_played
       }
     } else {
@@ -54,6 +57,7 @@ watch(fileContents, (contents: Song[]) => {
         .nodes[month]
         .nodes[day] = {
           nodes: {},
+          name: "Day",
           totalMsPlayed: song.ms_played
         }
     } else {
@@ -71,9 +75,7 @@ watch(fileContents, (contents: Song[]) => {
 
 <template>
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
-    <div class="">
-      <UploadButton v-model="fileContents" />
-    </div>
+    <UploadButton v-model="fileContents" />
 
     <template v-if="isDone">
       <div class="section">

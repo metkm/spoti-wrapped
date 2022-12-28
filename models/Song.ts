@@ -26,22 +26,8 @@ export interface MsPlayedByYears {
   nodes: {
     [key: number]: MsPlayedByYears
   },
+  name: string,
   totalMsPlayed: number
-
-  // years: {
-  //   [key: number]: {
-  //     months: {
-  //       [key: number]: {
-  //         days: {
-  //           [key: number]: number
-  //         }
-  //         totalMsPlayed: number
-  //       }
-  //     },
-  //     totalMsPlayed: number
-  //   }
-  // }
-  // totalMsPlayed: number
 }
 
 export interface WrappedResult {

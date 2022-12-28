@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="">
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
       class="rounded border p-4 my-1 relative overflow-hidden shadow"
@@ -20,12 +20,16 @@ defineProps<{
         :style="{ width: `${value.totalMsPlayed / dateNodes.totalMsPlayed * 100}%` }" 
       />
   
-      <p class="pl-2">
-        {{ key }} - {{ hidePercentage }}
-        <span class="text-xs">Total playtime {{ value.totalMsPlayed }}</span>
-      </p>
-  
-      <StatsShowMore v-model="hidePercentage" :nodes="value" />
+      <div class="relative">
+        <div>
+          <p class="text-lg font-bold">{{ value.name }} {{ key }}</p>
+          <p class="text-sm text-neutral-600">
+            Total of {{ Math.round(value.totalMsPlayed / 1000 / 60) }} minutes
+          </p>
+        </div>
+
+        <StatsShowMore v-if="value.name !== 'Day'" v-model="hidePercentage" :nodes="value" />
+      </div>
     </div>
   </div>
 </template>
