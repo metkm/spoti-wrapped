@@ -18,7 +18,7 @@ const wrappedResult = shallowRef<WrappedResult>();
 
       <Section>
         <template #head>
-          <p class="title">The albums you've listened</p>
+          <p class="title">The albums you've listened the most.</p>
         </template>
         
         <StatsAlbums :albums="wrappedResult.albumPlayCounts" />
@@ -63,7 +63,7 @@ const wrappedResult = shallowRef<WrappedResult>();
       <Section>
         <template #head>
           <p class="title">Skipped Tracks</p>
-          <p class="desc">'The tracks that you skipped the most.</p>
+          <p class="desc">Tracks that you skipped the most.</p>
         </template>
 
         <StatsTracksMostSkipped :tracks="wrappedResult.trackPlayCounts" />

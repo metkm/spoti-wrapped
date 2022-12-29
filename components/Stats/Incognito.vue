@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="p-4">
     <div class="flex justify-between">
       <p>{{ incognitoCount }}</p>
       <p>{{ totalRecordCount }}</p>

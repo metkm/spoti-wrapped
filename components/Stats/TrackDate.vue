@@ -9,10 +9,10 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-2">
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
-      class="rounded border p-4 my-1 relative overflow-hidden shadow"
+      class="p-4 relative shadow border-y"
     >
       <div
         v-if="!hidePercentage"
@@ -20,7 +20,7 @@ defineProps<{
         :style="{ width: `${value.totalMsPlayed / dateNodes.totalMsPlayed * 100}%` }" 
       />
   
-      <div class="relative">
+      <div class="flex flex-col gap-2 relative">
         <div>
           <p class="text-lg font-bold">{{ value.name }} {{ key }}</p>
           <p class="text-sm text-neutral-600">

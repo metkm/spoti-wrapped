@@ -28,11 +28,11 @@
   }
 
   .section {
-    @apply rounded-lg border p-0 lg:p-4 shadow-lg;
+    @apply rounded-lg border shadow-lg;
   }
 
   .section-head {
-    @apply p-2;
+    @apply p-4;
   }
 
   .title {
