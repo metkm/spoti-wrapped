@@ -29,7 +29,7 @@ defineProps<{
 
           <div class="border rounded-lg p-2 opacity-70">
             <p class="text-xs">The song you've listened to most.</p>
-            <p>{{ mostFrequentSong(value.songsListened)[0].master_metadata_track_name }}</p>
+            <StatsTrackMostListened :songs="value.songsListened" />
           </div>
         </div>
 
