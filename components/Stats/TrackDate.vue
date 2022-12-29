@@ -29,11 +29,11 @@ defineProps<{
 
           <div class="flex gap-2">
             <div class="most-listened">
-              <p class="text-xs">Songs you've listened to most.</p>
+              <p class="text-xs">Song you've listened to most.</p>
               <StatsTrackMostListened :songs="value.songsListened" />
             </div>
             <div class="most-listened">
-              <p class="text-xs">Albums you've listened to most.</p>
+              <p class="text-xs">Album you've listened to most.</p>
               <StatsAlbumMostListened :albums="value.albumsListened" />
             </div>
           </div>
