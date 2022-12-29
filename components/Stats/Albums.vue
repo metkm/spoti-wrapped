@@ -17,6 +17,6 @@ values = values.slice(0, 20);
 <template>
     <div v-for="[key, value] in values" class="item">
       <p>{{ key }}</p>
-      <p><span>listened</span> {{ value }} <span>times</span></p>
+      <p><span>Listened</span> {{ value }} <span>times</span></p>
     </div>
 </template>
