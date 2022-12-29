@@ -36,6 +36,7 @@ const fileSelectHandler = (event: Event) => {
 }
 
 const upload = () => {
+  emit("update:modelValue", undefined);
   const inputElement = openFilePicker();
   inputElement.addEventListener("change", fileSelectHandler);
 }
