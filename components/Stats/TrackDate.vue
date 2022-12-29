@@ -16,7 +16,7 @@ defineProps<{
     >
       <div
         v-if="!hidePercentage"
-        class="bg-green-500 absolute inset-0 -z-10" 
+        class="bg-green-500 bg-opacity-50 absolute inset-0 -z-10" 
         :style="{ width: `${value.totalMsPlayed / dateNodes.totalMsPlayed * 100}%` }" 
       />
   

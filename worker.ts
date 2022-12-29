@@ -98,7 +98,6 @@ const prepareWrappedResult = (songs: Song[]) => {
     }
   }
 
-  console.log(wrappedResult);
   return wrappedResult
 }
 

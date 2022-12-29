@@ -18,6 +18,7 @@
 
   .item {
     @apply p-2 hover:bg-neutral-100;
+    @apply border-b;
   }
 }
 
@@ -32,10 +33,18 @@
   }
 
   .section {
-    @apply rounded-lg border p-4 shadow-lg;
+    @apply rounded-lg border p-0 lg:p-4 shadow-lg;
   }
 
   .section-head {
-    @apply font-bold text-2xl;
+    @apply p-2;
+  }
+
+  .title {
+    @apply font-bold text-xl;
+  }
+
+  .desc {
+    @apply text-sm text-neutral-400;
   }
 }

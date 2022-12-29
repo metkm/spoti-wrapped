@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { TrackPlayCount } from '~~/models/Song';
+import { TrackPlayCounts } from '~~/models/Song';
 
 const { tracks } = defineProps<{
-  tracks: TrackPlayCount
+  tracks: TrackPlayCounts
 }>();
 
 let values = Object.entries(tracks);
@@ -11,8 +11,6 @@ values.sort(([_, a], [__, b]) => {
 });
 
 values = values.slice(0, 20);
-
-console.log(values);
 </script>
 
 <template>

@@ -52,13 +52,7 @@ export interface TrackPlayCount {
 
 export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
-  trackPlayCounts: {
-    [key: string]: {
-      song: Song,
-      listenCount: number,
-      skipCount: number
-    }
-  },
+  trackPlayCounts: TrackPlayCounts,
   skipEndReasons: SkipEndReasons
     
 }

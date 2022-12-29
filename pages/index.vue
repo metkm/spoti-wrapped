@@ -9,30 +9,38 @@ const wrappedResult = shallowRef<WrappedResult>();
     <UploadButton v-model="wrappedResult" />
 
     <template v-if="wrappedResult">
-      <div class="section">
-        <p class="section-head">How many times you've listened to same tracks?</p>
+      <Section>
+        <template #head>
+          <p class="title">How many times you've listened to same tracks?</p>
+        </template>
         <StatsTracks :tracks="wrappedResult.trackPlayCounts" />
-      </div>
+      </Section>
 
-      <div class="section">
-        <p class="section-head">
-          Dates with how much you've listened. Total of 
-          {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes
-        </p>
+      <Section>
+        <template #head>
+          <p class="title">
+            Dates with how much you've listened. Total of 
+            {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes
+          </p>
+        </template>
         
         <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
-      </div>
+      </Section>
 
-      <div class="section">
-        <p class="section-head">The reasons why your tracks are ended or started.</p>
-        <p class="text-neutral-400">I don't have any what most of these means either.</p>
+      <Section>
+        <template #head>
+          <p class="title">The reasons why your tracks are ended or started.</p>
+          <p class="desc">I don't have idea what most of these means either.</p>
+        </template>
 
-        <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)" class="p-4">
-          <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
-
-          <StatsTrackStartEndReasons :reasons="value" />
+        <div class="flex flex-col gap-5">
+          <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)">
+            <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
+  
+            <StatsTrackStartEndReasons :reasons="value" />
+          </div>
         </div>
-      </div>
+      </Section>
     </template>
   </main>
 </template>
