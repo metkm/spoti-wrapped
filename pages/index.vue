@@ -8,7 +8,27 @@ const wrappedResult = shallowRef<WrappedResult>();
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
     <UploadButton v-model="wrappedResult" />
 
-    <template v-if="wrappedResult">
+    <Section v-if="!wrappedResult">
+      <template #head>
+        <p class="title">How to use this thing?</p>
+      </template>
+
+      <div class="p-4">
+        <p>
+          First, you should to the <a href="https://www.spotify.com/us/account/privacy/" class="text-green-500">Spotify
+            Privacy</a> page.
+          Request your data and wait for Spotify to send your date to your email.
+        </p>
+
+        <p class="mt-4">
+          If you have your data already downloaded, Click the upload button and
+          select all the files that starts with <span class="bg-neutral-200 p-1 rounded">endsong_NUMBER</span> and
+          ends with <span class="bg-neutral-200 p-1 rounded">.json</span>
+        </p>
+      </div>
+    </Section>
+
+    <template v-else>
       <Section>
         <template #head>
           <p class="title">How many times you've listened to same tracks?</p>
@@ -20,7 +40,7 @@ const wrappedResult = shallowRef<WrappedResult>();
         <template #head>
           <p class="title">The albums you've listened the most.</p>
         </template>
-        
+
         <StatsAlbums :albums="wrappedResult.albumPlayCounts" />
       </Section>
 
@@ -29,7 +49,7 @@ const wrappedResult = shallowRef<WrappedResult>();
           <p class="title">Dates with how much you've listened.</p>
           <p class="desc"> Total of {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes</p>
         </template>
-        
+
         <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
       </Section>
 
@@ -42,7 +62,7 @@ const wrappedResult = shallowRef<WrappedResult>();
         <div class="flex flex-col gap-5">
           <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)">
             <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
-  
+
             <StatsTrackStartEndReasons :reasons="value" />
           </div>
         </div>
@@ -54,10 +74,8 @@ const wrappedResult = shallowRef<WrappedResult>();
           <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
         </template>
 
-        <StatsIncognito 
-          :incognitoCount="wrappedResult.incognitoCount"
-          :totalRecordCount="wrappedResult.totalRecordCount"
-        />
+        <StatsIncognito :incognitoCount="wrappedResult.incognitoCount"
+          :totalRecordCount="wrappedResult.totalRecordCount" />
       </Section>
 
       <Section>

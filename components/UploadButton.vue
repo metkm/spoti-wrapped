@@ -7,26 +7,34 @@ export default {
 <script setup lang="ts">
 import { WrappedResult } from '~~/models/Song';
 
-type Status = "waiting" | "progressing" | "done";
-
 const emit = defineEmits(["update:modelValue"]);
 defineProps<{
   modelValue: WrappedResult | undefined
 }>();
 
 const worker = useWorker();
-const currentStatus = ref<Status>("waiting");
+const currentStatus = ref("");
 
-const onWorkerMessage = (event: MessageEvent<WrappedResult>) => {
+type WorkerMessage = WrappedResult | string;
+
+const onWorkerMessage = (event: MessageEvent<WorkerMessage>) => {
+  console.log(event.data);
+
+  if (typeof event.data === "string") {
+    currentStatus.value = event.data;
+
+    return;
+  }
+
   emit("update:modelValue", event.data);
-  currentStatus.value = "done";
+  currentStatus.value = "";
 }
 
 const fileSelectHandler = (event: Event) => {
   const element = event.target as HTMLInputElement;
   if (!element.files) return;
-
-  currentStatus.value = "progressing";
+  
+  emit("update:modelValue", undefined);
   worker.postMessage({
     job: "parseFiles",
     args: element.files
@@ -36,7 +44,6 @@ const fileSelectHandler = (event: Event) => {
 }
 
 const upload = () => {
-  emit("update:modelValue", undefined);
   const inputElement = openFilePicker();
   inputElement.addEventListener("change", fileSelectHandler);
 }
@@ -52,6 +59,6 @@ const upload = () => {
       Upload
     </button>
 
-    <p v-if="currentStatus !== 'done'">{{ currentStatus }}</p>
+    <p v-if="currentStatus" class="text-center mt-2">{{ currentStatus }}</p>
   </div>
 </template>

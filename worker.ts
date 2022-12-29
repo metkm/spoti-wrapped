@@ -117,6 +117,8 @@ onmessage = async (event: MessageEvent<Jobs>) => {
       let parsedContents: Song[] = [];
 
       for (const file of event.data.args as FileList) {
+        postMessage(`Reading ${file.name}. Size: ${file.size}`);
+
         let result = await readFile(file);
         let parsed: Song[] = JSON.parse(result);
 
