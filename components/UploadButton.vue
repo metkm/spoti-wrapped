@@ -18,8 +18,6 @@ const currentStatus = ref("");
 type WorkerMessage = WrappedResult | string;
 
 const onWorkerMessage = (event: MessageEvent<WorkerMessage>) => {
-  console.log(event.data);
-
   if (typeof event.data === "string") {
     currentStatus.value = event.data;
 
