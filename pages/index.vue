@@ -18,6 +18,14 @@ const wrappedResult = shallowRef<WrappedResult>();
 
       <Section>
         <template #head>
+          <p class="title">The albums you've listened</p>
+        </template>
+        
+        <StatsAlbums :albums="wrappedResult.albumPlayCounts" />
+      </Section>
+
+      <Section>
+        <template #head>
           <p class="title">
             Dates with how much you've listened. Total of 
             {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes

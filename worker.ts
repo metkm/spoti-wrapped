@@ -15,7 +15,8 @@ const prepareWrappedResult = (songs: Song[]) => {
     skipEndReasons: {
       endReasons: {},
       startReasons: {}
-    }
+    },
+    albumPlayCounts: {}
   };
   
   for (const song of songs) {
@@ -27,6 +28,9 @@ const prepareWrappedResult = (songs: Song[]) => {
       
     wrappedResult.skipEndReasons.endReasons[song.reason_end] = 
       (wrappedResult.skipEndReasons.endReasons[song.reason_end] || 0) + 1
+
+    wrappedResult.albumPlayCounts[song.master_metadata_album_album_name] = 
+      (wrappedResult.albumPlayCounts[song.master_metadata_album_album_name] || 0) + 1;
 
     if (!wrappedResult.trackPlayCounts[song.master_metadata_track_name]) {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name] = {

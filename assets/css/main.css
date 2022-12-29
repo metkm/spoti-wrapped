@@ -17,17 +17,13 @@
   }
 
   .item {
+    @apply flex justify-between;
     @apply p-2 hover:bg-neutral-100;
     @apply border-b;
   }
 }
 
 @layer components {
-  .track {
-    @apply flex justify-between;
-    @apply item;
-  }
-
   .track span {
     @apply text-xs text-neutral-500;
   }

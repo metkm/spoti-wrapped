@@ -14,7 +14,7 @@ values = values.slice(0, 20);
 </script>
 
 <template>
-  <div v-for="[key, value] in values" class="track">
+  <div v-for="[key, value] in values" class="item">
     <div>
       <p>{{ key }}</p>
       <p class="text-xs">{{ value.song.master_metadata_album_artist_name }}</p>
