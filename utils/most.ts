@@ -1,13 +1,11 @@
-import { Song } from "~~/models/Song";
-
-export const mostFrequent = (
-  songs: Song[],
-  fieldToUse: keyof Song
+export const mostFrequent = <K extends keyof any, T extends Record<K, any>>(
+  songs: T[],
+  fieldToUse: K
 ) => {
   if (songs.length < 1) return [];
 
-  let newSongList: Song[] = [];
-  let seen: Record<string, number> = {};
+  let newSongList: T[] = [];
+  let seen: Record<any, any> = {};
 
   for (let index = 0; index < songs.length; index++) {
     const song = songs[index];
