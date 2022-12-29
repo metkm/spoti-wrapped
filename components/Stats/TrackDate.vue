@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="">
+  <div>
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
       class="rounded border p-4 my-1 relative overflow-hidden shadow"
