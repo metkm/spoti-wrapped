@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { Song } from '~~/models/Song';
+import { TrackPlayCount } from '~~/models/Song';
 
 const { tracks } = defineProps<{
-  tracks: {
-    [key: string]: {
-      song: Song,
-      count: number
-    }
-  }
+  tracks: TrackPlayCount
 }>();
 
 let values = Object.entries(tracks);
 values.sort(([_, a], [__, b]) => {
-  return b.count - a.count
+  return b.listenCount - a.listenCount
 });
 
 values = values.slice(0, 20);
+
+console.log(values);
 </script>
 
 <template>
@@ -25,6 +22,9 @@ values = values.slice(0, 20);
       <p class="text-xs">{{ value.song.master_metadata_album_artist_name }}</p>
     </div>
 
-    <p>{{ value.count }} <span>times</span></p>
+    <div class="flex flex-col justify-center text-end">
+      <p><span>listened</span> {{ value.listenCount }} <span>times</span></p>
+      <p v-if="value.skipCount > 0"><span>skipped</span> {{ value.skipCount }} <span>times</span></p>
+    </div>
   </div>
 </template>

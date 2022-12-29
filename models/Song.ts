@@ -40,10 +40,24 @@ export interface SkipEndReasons {
   }
 }
 
+export interface TrackPlayCounts {
+  [key: string]: TrackPlayCount
+}
+
+export interface TrackPlayCount {
+  song: Song,
+  listenCount: number,
+  skipCount: number
+}
+
 export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
   trackPlayCounts: {
-    [key: string]: any
+    [key: string]: {
+      song: Song,
+      listenCount: number,
+      skipCount: number
+    }
   },
   skipEndReasons: SkipEndReasons
     

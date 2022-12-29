@@ -31,10 +31,14 @@ const prepareWrappedResult = (songs: Song[]) => {
     if (!wrappedResult.trackPlayCounts[song.master_metadata_track_name]) {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name] = {
         song,
-        count: 0
+        listenCount: 0,
+        skipCount: 0
       };
     } else {
-      wrappedResult.trackPlayCounts[song.master_metadata_track_name].count += 1;
+      wrappedResult.trackPlayCounts[song.master_metadata_track_name].listenCount += 1;
+      if (song.skipped) {
+        wrappedResult.trackPlayCounts[song.master_metadata_track_name].skipCount += 1;
+      }
     }
 
     let date = new Date(song.ts);
