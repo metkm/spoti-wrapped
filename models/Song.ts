@@ -27,6 +27,7 @@ export interface MsPlayedByYears {
     [key: number]: MsPlayedByYears
   },
   songsListened: Song[],
+  albumsListened: string[]
   name: string,
   totalMsPlayed: number
 }
@@ -52,8 +53,8 @@ export interface TrackPlayCount {
 
 export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
-  trackPlayCounts: TrackPlayCounts,
   skipEndReasons: SkipEndReasons
+  trackPlayCounts: TrackPlayCounts,
   albumPlayCounts: {
     [key: string]: number
   }

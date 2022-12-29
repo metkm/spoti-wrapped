@@ -1,4 +1,6 @@
-export const mostFrequent = <K extends keyof any, T extends Record<K, any>>(
+import { AlignItemsProperty } from "csstype";
+
+export const mostFrequentObject = <K extends keyof any, T extends Record<K, any>>(
   songs: T[],
   fieldToUse: K
 ) => {
@@ -28,4 +30,26 @@ export const mostFrequent = <K extends keyof any, T extends Record<K, any>>(
   });
 
   return newSongList;
+}
+
+export const mostFrequentArray = <T extends string>(
+  items: T[]
+) => {
+  let seen: Partial<Record<T, number>> = {};
+  let newList: T[] = [];
+
+  items.forEach(item => {
+    if (!seen.hasOwnProperty(item)) {
+      seen[item] = 0;
+      newList.push(item);
+    } else {
+      seen[item]! += 1;
+    }
+  });
+
+  newList.sort((a, b) => (
+    seen[b]! - seen[a]!
+  ));
+
+  return newList;
 }

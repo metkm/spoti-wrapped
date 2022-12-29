@@ -1,3 +1,4 @@
+import { wrap } from "module";
 import readFile from "~/utils/ReadFile";
 import { WrappedResult, Song } from "~~/models/Song";
 import { Jobs } from "./models/Worker";
@@ -6,9 +7,10 @@ import { Jobs } from "./models/Worker";
 const prepareWrappedResult = (songs: Song[]) => {
   let wrappedResult: WrappedResult = {
     msPlayedByYears: {
+      albumsListened: [],
+      songsListened: [],
       name: "Year",
       nodes: {},
-      songsListened: [],
       totalMsPlayed: 0
     },
     trackPlayCounts: {},
@@ -51,55 +53,51 @@ const prepareWrappedResult = (songs: Song[]) => {
     let day = date.getDate();
 
     // the year doesn't exist. create it.
-    if (!wrappedResult.msPlayedByYears.nodes[year]) {
+    if (!wrappedResult.msPlayedByYears.nodes.hasOwnProperty(year)) {
       wrappedResult.msPlayedByYears.nodes[year] = {
-        nodes: {},
-        name: "Year",
+        albumsListened: [],
         songsListened: [],
-        totalMsPlayed: song.ms_played
-      };
-    } else {
-      wrappedResult.msPlayedByYears.nodes[year].totalMsPlayed += song.ms_played;
-      wrappedResult.msPlayedByYears.nodes[year].songsListened.push(song);
+        name: "Year",
+        nodes: {},
+        totalMsPlayed: 0
+      }
     }
+
+    wrappedResult.msPlayedByYears.nodes[year].songsListened.push(song);
+    wrappedResult.msPlayedByYears.nodes[year].albumsListened.push(song.master_metadata_album_album_name);
+    wrappedResult.msPlayedByYears.nodes[year].totalMsPlayed += song.ms_played;
+    ///////////
 
     // the month doesn't exist.
-    if (!wrappedResult.msPlayedByYears.nodes[year].nodes[month]) {
+    if (!wrappedResult.msPlayedByYears.nodes[year].nodes.hasOwnProperty(month)) {
       wrappedResult.msPlayedByYears.nodes[year].nodes[month] = {
-        nodes: {},
+        albumsListened: [],
         songsListened: [],
         name: "Month",
-        totalMsPlayed: song.ms_played
+        nodes: {},
+        totalMsPlayed: 0
       }
-    } else {
-      wrappedResult.msPlayedByYears.nodes[year].nodes[month].totalMsPlayed += song.ms_played;
-      wrappedResult.msPlayedByYears.nodes[year].nodes[month].songsListened.push(song);
     }
+
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].songsListened.push(song);
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].albumsListened.push(song.master_metadata_album_album_name);
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].totalMsPlayed += song.ms_played;
+    /////////////////////
 
     // if day doesn't exist
-    if (!wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day]) {
-      wrappedResult.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day] = {
-          nodes: {},
-          songsListened: [],
-          name: "Day",
-          totalMsPlayed: song.ms_played
-        }
-    } else {
-      wrappedResult.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day]
-        .totalMsPlayed += song.ms_played;
-
-      wrappedResult.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day]
-        .songsListened.push(song);
+    if (!wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes.hasOwnProperty(day)) {
+      wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day] = {
+        albumsListened: [],
+        songsListened: [],
+        name: "Day",
+        nodes: {},
+        totalMsPlayed: 0
+      }
     }
+
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day].songsListened.push(song);
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day].albumsListened.push(song.master_metadata_album_album_name);
+    wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day].totalMsPlayed += song.ms_played;
   }
 
   return wrappedResult

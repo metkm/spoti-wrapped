@@ -16,7 +16,7 @@ defineProps<{
     >
       <div
         v-if="!hidePercentage"
-        class="bg-green-500 bg-opacity-20 absolute inset-0 -z-10" 
+        class="absolute bg-green-500 inset-x-0 top-0 h-1" 
         :style="{ width: `${value.totalMsPlayed / dateNodes.totalMsPlayed * 100}%` }" 
       />
   
@@ -27,9 +27,15 @@ defineProps<{
             Total of {{ msToMinutes(value.totalMsPlayed) }} minutes
           </p>
 
-          <div class="border rounded-lg p-2">
-            <p class="text-xs">Songs you've listened to most.</p>
-            <StatsTrackMostListened :songs="value.songsListened" />
+          <div class="flex gap-2">
+            <div class="most-listened">
+              <p class="text-xs">Songs you've listened to most.</p>
+              <StatsTrackMostListened :songs="value.songsListened" />
+            </div>
+            <div class="most-listened">
+              <p class="text-xs">Albums you've listened to most.</p>
+              <StatsAlbumMostListened :albums="value.albumsListened" />
+            </div>
           </div>
         </div>
 

@@ -42,4 +42,9 @@
   .desc {
     @apply text-sm text-neutral-400;
   }
+
+  .most-listened {
+    @apply p-2 rounded border;
+    @apply flex-1 divide-y;
+  }
 }
