@@ -1,61 +1,57 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup lang="ts">
-import { Song } from '~~/models/Song';
+import { WrappedResult } from '~~/models/Song';
 
-defineProps(["modelValue"]);
+type Status = "waiting" | "progressing" | "done";
+
 const emit = defineEmits(["update:modelValue"]);
+defineProps<{
+  modelValue: WrappedResult | undefined
+}>();
 
-const openFilePicker = () => {
-  const inputElement = document.createElement("input");
-  inputElement.type = "file";
-  inputElement.setAttribute("multiple", "multiple");
-  inputElement.click();
+const worker = useWorker();
+const currentStatus = ref<Status>("waiting");
 
-  return inputElement;
+const onWorkerMessage = (event: MessageEvent<WrappedResult>) => {
+  emit("update:modelValue", event.data);
+  currentStatus.value = "done";
 }
 
-const readFileAsync = async (file: File): Promise<Song[]> => {
-  return new Promise(resolve => {
-    let fileReader = new FileReader();
-  
-    fileReader.addEventListener("load", () => {
-      resolve(JSON.parse(fileReader.result as string));
-    })
-  
-    fileReader.readAsText(file);
-  });
-}
-
-const fileSelectHandler = async (event: Event) => {
+const fileSelectHandler = (event: Event) => {
   const element = event.target as HTMLInputElement;
+  if (!element.files) return;
 
-  if (!element.files) {
-    return;
-  }
+  currentStatus.value = "progressing";
+  worker.postMessage({
+    job: "parseFiles",
+    args: element.files
+  });
 
-  let contents: Song[] = [];
-  for (const file of element.files) {
-    console.log("reading..")
-
-    contents = [
-      ...contents,
-      ...(await readFileAsync(file))
-    ]
-  }
-
-  emit("update:modelValue", contents);
+  worker.addEventListener("message", onWorkerMessage);
 }
 
 const upload = () => {
-  const element = openFilePicker();
-  element.addEventListener("change", fileSelectHandler);
+  emit("update:modelValue", undefined);
+  const inputElement = openFilePicker();
+  inputElement.addEventListener("change", fileSelectHandler);
 }
 </script>
 
 <template>
-  <button 
-    @click="upload"
-    class="bg-green-500 p-2 shadow-lg text-white"
-  >
-    Upload
-  </button>
+  <div class="flex flex-col">
+    <button
+      @click="upload"
+      class="bg-green-500 p-2 shadow-lg text-white hover:bg-red-500" 
+      v-bind="$attrs"
+    >
+      Upload
+    </button>
+
+    <p v-if="currentStatus !== 'done'">{{ currentStatus }}</p>
+  </div>
 </template>

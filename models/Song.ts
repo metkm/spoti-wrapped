@@ -27,13 +27,37 @@ export interface MsPlayedByYears {
     [key: number]: MsPlayedByYears
   },
   songsListened: Song[],
+  albumsListened: string[]
   name: string,
   totalMsPlayed: number
 }
 
+export interface SkipEndReasons {
+  startReasons: {
+    [key: string]: number
+  },
+  endReasons: {
+    [key: string]: number
+  }
+}
+
+export interface TrackPlayCounts {
+  [key: string]: TrackPlayCount
+}
+
+export interface TrackPlayCount {
+  song: Song,
+  listenCount: number,
+  skipCount: number
+}
+
 export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
-  trackPlayCounts: {
-    [key: string]: any
-  },
+  skipEndReasons: SkipEndReasons,
+  incognitoCount: number,
+  totalRecordCount: number,
+  trackPlayCounts: TrackPlayCounts,
+  albumPlayCounts: {
+    [key: string]: number
+  }
 }

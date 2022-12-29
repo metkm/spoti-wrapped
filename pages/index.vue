@@ -1,126 +1,73 @@
 <script setup lang="ts">
-import { Song, WrappedResult } from "../models/Song";
+import { WrappedResult } from '~~/models/Song';
 
-type Status = "loaded" | "loading" | "waiting";
-
-const loadStatus = ref<Status>("waiting");
-const fileContents = ref();
-
-const wrappedResults = reactive<WrappedResult>({
-  msPlayedByYears: {
-    nodes: {},
-    name: "Year",
-    songsListened: [],
-    totalMsPlayed: 0
-  },
-  trackPlayCounts: {}
-});
-
-watch(fileContents, async (contents: Song[]) => {
-  loadStatus.value = "loading";
-
-  for (const song of contents) {
-    wrappedResults.msPlayedByYears.totalMsPlayed += song.ms_played;
-
-    if (!song.master_metadata_track_name) continue;
-
-    if (!wrappedResults.trackPlayCounts.hasOwnProperty(song.master_metadata_track_name)) {
-      wrappedResults.trackPlayCounts[song.master_metadata_track_name] = {
-        song,
-        count: 0
-      };
-    } else if (song.master_metadata_track_name) {
-      wrappedResults.trackPlayCounts[song.master_metadata_track_name].count += 1;
-    }
-
-    let datetime = new Date(song.ts);
-    let year = datetime.getFullYear();
-    let month = datetime.getMonth();
-    let day = datetime.getDate();
-    
-    // the year doesn't exist. create it.
-    if (!wrappedResults.msPlayedByYears.nodes[year]) {
-      wrappedResults.msPlayedByYears.nodes[year] = {
-        nodes: {},
-        name: "Year",
-        songsListened: [],
-        totalMsPlayed: song.ms_played
-      };
-    } else {
-      wrappedResults.msPlayedByYears.nodes[year].totalMsPlayed += song.ms_played;
-      wrappedResults.msPlayedByYears.nodes[year].songsListened.push(song);
-    }
-
-    // the month doesn't exist.
-    if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month]) {
-      wrappedResults.msPlayedByYears.nodes[year].nodes[month] = {
-        nodes: {},
-        songsListened: [],
-        name: "Month",
-        totalMsPlayed: song.ms_played
-      }
-    } else {
-      wrappedResults.msPlayedByYears.nodes[year].nodes[month].totalMsPlayed += song.ms_played;
-      wrappedResults.msPlayedByYears.nodes[year].nodes[month].songsListened.push(song);
-    }
-
-    // if day doesn't exist
-    if (!wrappedResults.msPlayedByYears.nodes[year].nodes[month].nodes[day]) {
-      wrappedResults.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day] = {
-          nodes: {},
-          songsListened: [],
-          name: "Day",
-          totalMsPlayed: song.ms_played
-        }
-    } else {
-      wrappedResults.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day]
-        .totalMsPlayed += song.ms_played;
-
-      wrappedResults.msPlayedByYears
-        .nodes[year]
-        .nodes[month]
-        .nodes[day]
-        .songsListened.push(song);
-    }
-  }
-
-  
-  loadStatus.value = "loaded";
-})
+const wrappedResult = shallowRef<WrappedResult>();
 </script>
 
 <template>
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
-    <UploadButton v-model="fileContents" />
+    <UploadButton v-model="wrappedResult" />
 
-    <template v-if="loadStatus === 'waiting'">
-      <p>Start Loading Your Spotify Data!</p>
-    </template>
-    <template v-else-if="loadStatus === 'loading'">
-      <p>Loading...</p>
-    </template>
-    <template v-else>
-      <div class="section">
-        <p class="section-head">How many times you've listened to same tracks?</p>
+    <template v-if="wrappedResult">
+      <Section>
+        <template #head>
+          <p class="title">How many times you've listened to same tracks?</p>
+        </template>
+        <StatsTracks :tracks="wrappedResult.trackPlayCounts" />
+      </Section>
 
-        <StatsTracks :tracks="wrappedResults.trackPlayCounts" />
-      </div>
-
-      <div class="section">
-        <p class="section-head">
-          Dates with how much you've listened. Total of 
-          {{ msToMinutes(wrappedResults.msPlayedByYears.totalMsPlayed) }} minutes
-        </p>
+      <Section>
+        <template #head>
+          <p class="title">The albums you've listened the most.</p>
+        </template>
         
-        <StatsTrackDate :dateNodes="wrappedResults.msPlayedByYears" />
-      </div>
+        <StatsAlbums :albums="wrappedResult.albumPlayCounts" />
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Dates with how much you've listened.</p>
+          <p class="desc"> Total of {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes</p>
+        </template>
+        
+        <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">The reasons why your tracks are ended or started.</p>
+          <p class="desc">I don't have idea what most of these means either.</p>
+        </template>
+
+        <div class="flex flex-col gap-5">
+          <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)">
+            <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
+  
+            <StatsTrackStartEndReasons :reasons="value" />
+          </div>
+        </div>
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Incognito</p>
+          <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
+        </template>
+
+        <StatsIncognito 
+          :incognitoCount="wrappedResult.incognitoCount"
+          :totalRecordCount="wrappedResult.totalRecordCount"
+        />
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Skipped Tracks</p>
+          <p class="desc">Tracks that you skipped the most.</p>
+        </template>
+
+        <StatsTracksMostSkipped :tracks="wrappedResult.trackPlayCounts" />
+      </Section>
     </template>
   </main>
 </template>
-

@@ -17,25 +17,34 @@
   }
 
   .item {
+    @apply flex justify-between;
     @apply p-2 hover:bg-neutral-100;
   }
 }
 
 @layer components {
-  .track {
-    @apply flex justify-between;
-    @apply item;
-  }
-
   .track span {
     @apply text-xs text-neutral-500;
   }
 
   .section {
-    @apply rounded-lg border p-4 shadow-lg;
+    @apply rounded-lg border shadow-lg;
   }
 
   .section-head {
-    @apply font-bold text-2xl;
+    @apply p-4;
+  }
+
+  .title {
+    @apply font-bold text-xl;
+  }
+
+  .desc {
+    @apply text-sm text-neutral-400;
+  }
+
+  .most-listened {
+    @apply p-2 rounded border;
+    @apply flex-1 divide-y;
   }
 }

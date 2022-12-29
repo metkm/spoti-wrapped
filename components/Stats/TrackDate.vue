@@ -9,27 +9,33 @@ defineProps<{
 </script>
 
 <template>
-  <div class="">
+  <div class="flex flex-col gap-2">
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
-      class="rounded border p-4 my-1 relative overflow-hidden shadow"
+      class="p-4 relative shadow border-y"
     >
       <div
         v-if="!hidePercentage"
-        class="bg-green-500 absolute inset-0 -z-10" 
+        class="absolute bg-green-500 inset-x-0 top-0 h-1" 
         :style="{ width: `${value.totalMsPlayed / dateNodes.totalMsPlayed * 100}%` }" 
       />
   
-      <div class="relative">
+      <div class="flex flex-col gap-2 relative">
         <div>
           <p class="text-lg font-bold">{{ value.name }} {{ key }}</p>
           <p class="text-sm text-neutral-600">
             Total of {{ msToMinutes(value.totalMsPlayed) }} minutes
           </p>
 
-          <div class="border rounded-lg p-2 opacity-70">
-            <p class="text-xs">The song you've listened to most.</p>
-            <p>{{ mostFrequentSong(value.songsListened)[0].master_metadata_track_name }}</p>
+          <div class="flex gap-2">
+            <div class="most-listened">
+              <p class="text-xs">Songs you've listened to most.</p>
+              <StatsTrackMostListened :songs="value.songsListened" />
+            </div>
+            <div class="most-listened">
+              <p class="text-xs">Albums you've listened to most.</p>
+              <StatsAlbumMostListened :albums="value.albumsListened" />
+            </div>
           </div>
         </div>
 

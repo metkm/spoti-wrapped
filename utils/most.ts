@@ -1,30 +1,55 @@
-import { Song } from "~~/models/Song";
+import { AlignItemsProperty } from "csstype";
 
-export const mostFrequentSong = (
-  songs: Song[]
+export const mostFrequentObject = <K extends keyof any, T extends Record<K, any>>(
+  songs: T[],
+  fieldToUse: K
 ) => {
   if (songs.length < 1) return [];
 
-  let seen: Record<string, number> = {};
+  let newSongList: T[] = [];
+  let seen: Record<any, any> = {};
 
   for (let index = 0; index < songs.length; index++) {
     const song = songs[index];
 
-    if (!song.master_metadata_track_name) continue;
-    
-    if (!seen[song.master_metadata_track_name]) {
-      seen[song.master_metadata_track_name] = 1;
+    if (!song[fieldToUse]) continue;
+
+    if (!seen.hasOwnProperty(song[fieldToUse])) {
+      seen[song[fieldToUse]] = 0;
+      newSongList.push(song);
     } else {
-      seen[song.master_metadata_track_name] += 1;
+      seen[song[fieldToUse]] += 1;
     }
   }
 
-  songs.sort((firstSong, secondSong) => {
-    let firstSongSeenCount = seen[firstSong.master_metadata_track_name!];
-    let secondSongSeenCount = seen[secondSong.master_metadata_track_name!];
+  newSongList.sort((firstSong, secondSong) => {
+    let firstSongSeenCount = seen[firstSong[fieldToUse]!];
+    let secondSongSeenCount = seen[secondSong[fieldToUse]!];
 
     return secondSongSeenCount - firstSongSeenCount;
   });
 
-  return songs
+  return newSongList;
+}
+
+export const mostFrequentArray = <T extends string>(
+  items: T[]
+) => {
+  let seen: Partial<Record<T, number>> = {};
+  let newList: T[] = [];
+
+  items.forEach(item => {
+    if (!seen.hasOwnProperty(item)) {
+      seen[item] = 0;
+      newList.push(item);
+    } else {
+      seen[item]! += 1;
+    }
+  });
+
+  newList.sort((a, b) => (
+    seen[b]! - seen[a]!
+  ));
+
+  return newList;
 }
