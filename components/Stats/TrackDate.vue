@@ -28,7 +28,7 @@ defineProps<{
           </p>
 
           <div class="border rounded-lg p-2">
-            <p class="text-xs">The song you've listened to most.</p>
+            <p class="text-xs">Songs you've listened to most.</p>
             <StatsTrackMostListened :songs="value.songsListened" />
           </div>
         </div>
