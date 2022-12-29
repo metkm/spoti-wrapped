@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { WrappedResult } from '~~/models/Song';
 
-const wrappedResult = ref<WrappedResult>();
+const wrappedResult = shallowRef<WrappedResult>();
 </script>
 
 <template>
@@ -11,7 +11,6 @@ const wrappedResult = ref<WrappedResult>();
     <template v-if="wrappedResult">
       <div class="section">
         <p class="section-head">How many times you've listened to same tracks?</p>
-
         <StatsTracks :tracks="wrappedResult.trackPlayCounts" />
       </div>
 

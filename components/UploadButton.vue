@@ -18,8 +18,6 @@ const worker = useWorker();
 const currentStatus = ref<Status>("waiting");
 
 const onWorkerMessage = (event: MessageEvent<WrappedResult>) => {
-  console.log(event.data);
-
   emit("update:modelValue", event.data);
 }
 
