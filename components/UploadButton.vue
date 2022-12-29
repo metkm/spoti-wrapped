@@ -51,7 +51,7 @@ const upload = () => {
   <div class="flex flex-col">
     <button
       @click="upload"
-      class="bg-green-500 p-2 shadow-lg text-white hover:bg-red-500" 
+      class="bg-green-500 p-2 shadow-lg rounded-lg text-white hover:bg-red-500" 
       v-bind="$attrs"
     >
       Upload
