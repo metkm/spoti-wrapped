@@ -31,9 +31,20 @@ export interface MsPlayedByYears {
   totalMsPlayed: number
 }
 
+export interface SkipEndReasons {
+  startReasons: {
+    [key: string]: number
+  },
+  endReasons: {
+    [key: string]: number
+  }
+}
+
 export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
   trackPlayCounts: {
     [key: string]: any
   },
+  skipEndReasons: SkipEndReasons
+    
 }

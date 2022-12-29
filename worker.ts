@@ -11,12 +11,22 @@ const prepareWrappedResult = (songs: Song[]) => {
       songsListened: [],
       totalMsPlayed: 0
     },
-    trackPlayCounts: {}
+    trackPlayCounts: {},
+    skipEndReasons: {
+      endReasons: {},
+      startReasons: {}
+    }
   };
   
   for (const song of songs) {
     wrappedResult.msPlayedByYears!.totalMsPlayed += song.ms_played;
     if (!song.master_metadata_track_name) continue;
+
+    wrappedResult.skipEndReasons.startReasons[song.reason_start] = 
+      (wrappedResult.skipEndReasons.startReasons[song.reason_start] || 0) + 1
+      
+    wrappedResult.skipEndReasons.endReasons[song.reason_end] = 
+      (wrappedResult.skipEndReasons.endReasons[song.reason_end] || 0) + 1
 
     if (!wrappedResult.trackPlayCounts[song.master_metadata_track_name]) {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name] = {
@@ -84,6 +94,7 @@ const prepareWrappedResult = (songs: Song[]) => {
     }
   }
 
+  console.log(wrappedResult);
   return wrappedResult
 }
 

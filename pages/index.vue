@@ -22,6 +22,17 @@ const wrappedResult = shallowRef<WrappedResult>();
         
         <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
       </div>
+
+      <div class="section">
+        <p class="section-head">The reasons why your tracks are ended or started.</p>
+        <p class="text-neutral-400">I don't have any what most of these means either.</p>
+
+        <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)" class="p-4">
+          <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
+
+          <StatsTrackStartEndReasons :reasons="value" />
+        </div>
+      </div>
     </template>
   </main>
 </template>
