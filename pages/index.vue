@@ -59,6 +59,15 @@ const wrappedResult = shallowRef<WrappedResult>();
           :totalRecordCount="wrappedResult.totalRecordCount"
         />
       </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Skipped Tracks</p>
+          <p class="desc">'The tracks that you skipped the most.</p>
+        </template>
+
+        <StatsTracksMostSkipped :tracks="wrappedResult.trackPlayCounts" />
+      </Section>
     </template>
   </main>
 </template>
