@@ -54,20 +54,10 @@ const wrappedResult = shallowRef<WrappedResult>();
           <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
         </template>
 
-        <div>
-          <div class="flex justify-between">
-            <p>{{ wrappedResult.incognitoCount }}</p>
-            <p>{{ wrappedResult.totalRecordCount }}</p>
-          </div>
-          <div class="relative h-10 rounded bg-neutral-200 overflow-hidden">
-            <div
-              class="absolute z-10 bg-green-500 inset-0"
-              :style="{
-                width: `${wrappedResult.incognitoCount / wrappedResult.totalRecordCount * 100}%`
-              }"
-            />
-          </div>
-        </div>
+        <StatsIncognito 
+          :incognitoCount="wrappedResult.incognitoCount"
+          :totalRecordCount="wrappedResult.totalRecordCount"
+        />
       </Section>
     </template>
   </main>
