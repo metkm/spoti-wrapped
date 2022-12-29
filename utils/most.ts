@@ -1,7 +1,8 @@
 import { Song } from "~~/models/Song";
 
-export const mostFrequentSong = (
-  songs: Song[]
+export const mostFrequent = (
+  songs: Song[],
+  fieldToUse: keyof Song
 ) => {
   if (songs.length < 1) return [];
 
@@ -11,19 +12,19 @@ export const mostFrequentSong = (
   for (let index = 0; index < songs.length; index++) {
     const song = songs[index];
 
-    if (!song.master_metadata_track_name) continue;
+    if (!song[fieldToUse]) continue;
 
-    if (!seen.hasOwnProperty(song.master_metadata_track_name)) {
-      seen[song.master_metadata_track_name] = 0;
+    if (!seen.hasOwnProperty(song[fieldToUse])) {
+      seen[song[fieldToUse]] = 0;
       newSongList.push(song);
     } else {
-      seen[song.master_metadata_track_name] += 1;
+      seen[song[fieldToUse]] += 1;
     }
   }
 
   newSongList.sort((firstSong, secondSong) => {
-    let firstSongSeenCount = seen[firstSong.master_metadata_track_name!];
-    let secondSongSeenCount = seen[secondSong.master_metadata_track_name!];
+    let firstSongSeenCount = seen[firstSong[fieldToUse]!];
+    let secondSongSeenCount = seen[secondSong[fieldToUse]!];
 
     return secondSongSeenCount - firstSongSeenCount;
   });

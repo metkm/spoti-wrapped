@@ -5,7 +5,7 @@ const { songs } = defineProps<{
   songs: Song[]
 }>()
 
-let sorted = mostFrequentSong(songs).slice(0, 2);
+let sorted = mostFrequent(songs, "master_metadata_track_name").slice(0, 2);
 </script>
 
 <template>
