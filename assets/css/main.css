@@ -19,7 +19,6 @@
   .item {
     @apply flex justify-between;
     @apply p-2 hover:bg-neutral-100;
-    @apply border-b;
   }
 }
 

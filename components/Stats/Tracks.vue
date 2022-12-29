@@ -14,15 +14,17 @@ values = values.slice(0, 20);
 </script>
 
 <template>
-  <div v-for="[key, value] in values" class="item">
-    <div>
-      <p>{{ key }}</p>
-      <p class="text-xs">{{ value.song.master_metadata_album_artist_name }}</p>
-    </div>
-
-    <div class="flex flex-col justify-center text-end">
-      <p><span>Listened</span> {{ value.listenCount }} <span>times</span></p>
-      <p v-if="value.skipCount > 0"><span>skipped</span> {{ value.skipCount }} <span>times</span></p>
+  <div class="divide-y">
+    <div v-for="[key, value] in values" class="item">
+      <div>
+        <p>{{ key }}</p>
+        <p class="text-xs">{{ value.song.master_metadata_album_artist_name }}</p>
+      </div>
+  
+      <div class="flex flex-col justify-center text-end">
+        <p><span>Listened</span> {{ value.listenCount }} <span>times</span></p>
+        <p v-if="value.skipCount > 0"><span>skipped</span> {{ value.skipCount }} <span>times</span></p>
+      </div>
     </div>
   </div>
 </template>
