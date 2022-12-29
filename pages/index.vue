@@ -26,10 +26,8 @@ const wrappedResult = shallowRef<WrappedResult>();
 
       <Section>
         <template #head>
-          <p class="title">
-            Dates with how much you've listened. Total of 
-            {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes
-          </p>
+          <p class="title">Dates with how much you've listened.</p>
+          <p class="desc"> Total of {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes</p>
         </template>
         
         <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
@@ -46,6 +44,28 @@ const wrappedResult = shallowRef<WrappedResult>();
             <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
   
             <StatsTrackStartEndReasons :reasons="value" />
+          </div>
+        </div>
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Incognito</p>
+          <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
+        </template>
+
+        <div>
+          <div class="flex justify-between">
+            <p>{{ wrappedResult.incognitoCount }}</p>
+            <p>{{ wrappedResult.totalRecordCount }}</p>
+          </div>
+          <div class="relative h-10 rounded bg-neutral-200 overflow-hidden">
+            <div
+              class="absolute z-10 bg-green-500 inset-0"
+              :style="{
+                width: `${wrappedResult.incognitoCount / wrappedResult.totalRecordCount * 100}%`
+              }"
+            />
           </div>
         </div>
       </Section>

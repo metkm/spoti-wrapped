@@ -19,6 +19,7 @@ const currentStatus = ref<Status>("waiting");
 
 const onWorkerMessage = (event: MessageEvent<WrappedResult>) => {
   emit("update:modelValue", event.data);
+  currentStatus.value = "done";
 }
 
 const fileSelectHandler = (event: Event) => {
@@ -50,6 +51,6 @@ const upload = () => {
       Upload
     </button>
 
-    <p>{{ currentStatus }}</p>
+    <p v-if="currentStatus !== 'done'">{{ currentStatus }}</p>
   </div>
 </template>

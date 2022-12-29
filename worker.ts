@@ -1,4 +1,3 @@
-import { wrap } from "module";
 import readFile from "~/utils/ReadFile";
 import { WrappedResult, Song } from "~~/models/Song";
 import { Jobs } from "./models/Worker";
@@ -18,11 +17,18 @@ const prepareWrappedResult = (songs: Song[]) => {
       endReasons: {},
       startReasons: {}
     },
-    albumPlayCounts: {}
+    albumPlayCounts: {},
+    incognitoCount: 0,
+    totalRecordCount: 0
   };
   
   for (const song of songs) {
     wrappedResult.msPlayedByYears!.totalMsPlayed += song.ms_played;
+    
+    if (song.incognito_mode) {
+      wrappedResult.incognitoCount += 1;
+    }
+    
     if (!song.master_metadata_track_name) continue;
 
     wrappedResult.skipEndReasons.startReasons[song.reason_start] = 
@@ -99,6 +105,8 @@ const prepareWrappedResult = (songs: Song[]) => {
     wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day].albumsListened.push(song.master_metadata_album_album_name);
     wrappedResult.msPlayedByYears.nodes[year].nodes[month].nodes[day].totalMsPlayed += song.ms_played;
   }
+
+  wrappedResult.totalRecordCount = songs.length;
 
   return wrappedResult
 }
