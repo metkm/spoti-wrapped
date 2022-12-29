@@ -1,8 +1,21 @@
 <script setup lang="ts">
+import { WrappedResult } from '~~/models/Song';
+
 type Status = "waiting" | "progressing" | "done";
+
+const emit = defineEmits(["update:modelValue"]);
+defineProps<{
+  modelValue: WrappedResult | undefined
+}>();
 
 const worker = useWorker();
 const currentStatus = ref<Status>("waiting");
+
+const onWorkerMessage = (event: MessageEvent<WrappedResult>) => {
+  console.log(event.data);
+
+  emit("update:modelValue", event.data);
+}
 
 const fileSelectHandler = (event: Event) => {
   const element = event.target as HTMLInputElement;
@@ -13,6 +26,8 @@ const fileSelectHandler = (event: Event) => {
     job: "parseFiles",
     args: element.files
   });
+
+  worker.addEventListener("message", onWorkerMessage);
 }
 
 const upload = () => {
@@ -62,6 +77,4 @@ const upload = () => {
   >
     Upload
   </button>
-
-  <p>{{ currentStatus }}</p>
 </template>

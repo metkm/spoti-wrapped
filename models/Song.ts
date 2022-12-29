@@ -32,7 +32,7 @@ export interface MsPlayedByYears {
 }
 
 export interface WrappedResult {
-  msPlayedByYears?: MsPlayedByYears,
+  msPlayedByYears: MsPlayedByYears,
   trackPlayCounts: {
     [key: string]: any
   },
