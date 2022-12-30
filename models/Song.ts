@@ -57,6 +57,7 @@ export interface WrappedResult {
   skipEndReasons: SkipEndReasons,
   incognitoCount: number,
   shuffleCount: number,
+  offlineCount: number,
   totalRecordCount: number,
   trackPlayCounts: TrackPlayCounts,
   albumPlayCounts: {

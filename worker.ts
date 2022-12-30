@@ -20,6 +20,7 @@ const prepareWrappedResult = (songs: Song[]) => {
     },
     albumPlayCounts: {},
     shuffleCount: 0,
+    offlineCount: 0,
     incognitoCount: 0,
     totalRecordCount: 0,
   };
@@ -33,6 +34,10 @@ const prepareWrappedResult = (songs: Song[]) => {
 
     if (song.shuffle) {
       wrappedResult.shuffleCount += 1;
+    }
+
+    if (song.offline) {
+      wrappedResult.offlineCount += 1;
     }
     
     if (!song.master_metadata_track_name) continue;

@@ -94,6 +94,18 @@ const wrappedResult = shallowRef<WrappedResult>();
 
       <Section>
         <template #head>
+          <p class="title">Offline</p>
+          <p class="desc">Count of whether the track was played in offline mode.</p>
+        </template>
+
+        <StatsBar 
+          :count="wrappedResult.offlineCount"
+          :totalCount="wrappedResult.totalRecordCount"
+        />
+      </Section>
+
+      <Section>
+        <template #head>
           <p class="title">Skipped Tracks</p>
           <p class="desc">Tracks that you skipped the most.</p>
         </template>
