@@ -15,15 +15,15 @@ const wrappedResult = shallowRef<WrappedResult>();
 
       <div class="p-4">
         <p>
-          First, you should to the <a href="https://www.spotify.com/us/account/privacy/" class="text-green-500">Spotify
+          First, you should go to the <a href="https://www.spotify.com/us/account/privacy/" class="text-green-500">Spotify
             Privacy</a> page.
           Request your data and wait for Spotify to send your data to your email.
         </p>
 
         <p class="mt-4">
-          If you have your data already downloaded, Click the upload button and
+          If you have your data already downloaded, click the upload button and
           select all the files that starts with <span class="bg-neutral-200 p-1 rounded">endsong_NUMBER</span> and
-          ends with <span class="bg-neutral-200 p-1 rounded">.json</span>
+          ends with <span class="bg-neutral-200 p-1 rounded">.json</span> in the folder you have downloaded.
         </p>
       </div>
     </Section>
