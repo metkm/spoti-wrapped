@@ -21,7 +21,7 @@ const wrappedResult = shallowRef<WrappedResult>();
         <p>
           First, you should go to the <a href="https://www.spotify.com/us/account/privacy/" class="text-green-500">Spotify
             Privacy</a> page.
-          Request your data and wait for Spotify to send your data to your email.
+          Request your Extended Streaming History and wait for Spotify to send your data to your email.
         </p>
 
         <p class="mt-4">
