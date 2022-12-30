@@ -74,8 +74,22 @@ const wrappedResult = shallowRef<WrappedResult>();
           <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
         </template>
 
-        <StatsIncognito :incognitoCount="wrappedResult.incognitoCount"
-          :totalRecordCount="wrappedResult.totalRecordCount" />
+        <StatsBar 
+          :count="wrappedResult.incognitoCount"
+          :totalCount="wrappedResult.totalRecordCount"
+        />
+      </Section>
+
+      <Section>
+        <template #head>
+          <p class="title">Shuffle</p>
+          <p class="desc">Count of how many times you left the shuffle mode open.</p>
+        </template>
+
+        <StatsBar 
+          :count="wrappedResult.shuffleCount"
+          :totalCount="wrappedResult.totalRecordCount"
+        />
       </Section>
 
       <Section>

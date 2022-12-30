@@ -19,8 +19,9 @@ const prepareWrappedResult = (songs: Song[]) => {
       startReasons: {}
     },
     albumPlayCounts: {},
+    shuffleCount: 0,
     incognitoCount: 0,
-    totalRecordCount: 0
+    totalRecordCount: 0,
   };
   
   for (const song of songs) {
@@ -28,6 +29,10 @@ const prepareWrappedResult = (songs: Song[]) => {
     
     if (song.incognito_mode) {
       wrappedResult.incognitoCount += 1;
+    }
+
+    if (song.shuffle) {
+      wrappedResult.shuffleCount += 1;
     }
     
     if (!song.master_metadata_track_name) continue;

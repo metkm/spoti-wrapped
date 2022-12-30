@@ -56,6 +56,7 @@ export interface WrappedResult {
   msPlayedByYears: MsPlayedByYears,
   skipEndReasons: SkipEndReasons,
   incognitoCount: number,
+  shuffleCount: number,
   totalRecordCount: number,
   trackPlayCounts: TrackPlayCounts,
   albumPlayCounts: {
