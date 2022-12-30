@@ -8,4 +8,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  app: {
+    head: {
+      title: "Spotify Wrapped"
+    }
+  }
 })
