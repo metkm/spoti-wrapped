@@ -17,12 +17,12 @@
   }
 
   .item {
-    @apply flex justify-between items-center p-2;
+    @apply grid grid-cols-2 items-center p-2;
     @apply hover:bg-neutral-100;
   }
 
   .item-info {
-    @apply text-xs;
+    @apply text-xs text-end;
   }
 }
 

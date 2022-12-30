@@ -12,7 +12,7 @@ defineProps<{
   <div class="flex flex-col gap-2">
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
-      class="p-4 relative shadow border-y"
+      class="p-2 lg:p-4 relative shadow border-y"
     >
       <div
         v-if="!hidePercentage"

@@ -13,7 +13,7 @@ defineProps<{
       <p class="text-xs">{{ track.song.master_metadata_album_artist_name }}</p>
     </div>
 
-    <div class="flex flex-col justify-center text-end text-xs">
+    <div class="item-info">
       <slot name="right">
         <p>Listened {{ track.listenCount }} times</p>
         <p v-if="track.skipCount > 0">Skipped {{ track.skipCount }} times</p>
