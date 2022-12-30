@@ -17,8 +17,12 @@
   }
 
   .item {
-    @apply flex items-center justify-between;
-    @apply p-2 hover:bg-neutral-100;
+    @apply flex justify-between p-2;
+    @apply hover:bg-neutral-100;
+  }
+
+  .item-info {
+    @apply text-xs;
   }
 }
 

@@ -48,7 +48,8 @@ export interface TrackPlayCounts {
 export interface TrackPlayCount {
   song: Song,
   listenCount: number,
-  skipCount: number
+  skipCount: number,
+  totalMsPlayed: number
 }
 
 export interface WrappedResult {

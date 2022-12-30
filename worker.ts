@@ -44,11 +44,13 @@ const prepareWrappedResult = (songs: Song[]) => {
     if (!wrappedResult.trackPlayCounts[song.master_metadata_track_name]) {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name] = {
         song,
-        listenCount: 0,
-        skipCount: 0
+        listenCount: 1,
+        skipCount: song.skipped ? 1 : 0,
+        totalMsPlayed: song.ms_played
       };
     } else {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name].listenCount += 1;
+      wrappedResult.trackPlayCounts[song.master_metadata_track_name].totalMsPlayed += song.ms_played;
       if (song.skipped) {
         wrappedResult.trackPlayCounts[song.master_metadata_track_name].skipCount += 1;
       }
