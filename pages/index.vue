@@ -7,8 +7,12 @@ const wrappedResult = shallowRef<WrappedResult>();
 <template>
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
     <UploadButton v-model="wrappedResult" />
-
+    
     <Section v-if="!wrappedResult">
+      <a class="absolute right-2 top-2" href="https://github.com/metkm/spoti-wrapped">
+        <IconsGithub class="h-8 aspect-square" />
+      </a>
+      
       <template #head>
         <p class="title">How to use this thing?</p>
       </template>
