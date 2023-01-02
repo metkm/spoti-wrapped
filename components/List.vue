@@ -3,7 +3,7 @@ const { items, sort } = defineProps<{
   items: {
     [key: string]: any
   },
-  sort: (first: any, second: any) => number,
+  sort?: (first: any, second: any) => number,
 }>();
 
 let values = Object.entries(items);
@@ -18,7 +18,10 @@ values = values.slice(0, 20);
       v-for="[key, value] in values"
       class="grid grid-cols-2 items-center hover:bg-neutral-100 p-2"
     >
-      <slot :key="key" :value="value"></slot>
+      <slot :key="key" :value="value">
+        <p>{{ key }}</p>
+        <p class="text-end">{{ value }}</p>
+      </slot>
     </div>
   </div>
 </template>
