@@ -15,15 +15,6 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
-
-  .item {
-    @apply grid grid-cols-2 items-center p-2;
-    @apply hover:bg-neutral-100;
-  }
-
-  .item-info {
-    @apply text-xs text-end;
-  }
 }
 
 @layer components {
@@ -31,25 +22,13 @@
     @apply text-xs text-neutral-500;
   }
 
-  .section {
-    @apply rounded-lg border shadow-lg;
-  }
-
-  .section-head {
-    @apply p-4;
-  }
-
-  .title {
-    @apply font-bold text-xl;
-  }
-
-  .desc {
-    @apply text-sm text-neutral-400;
-  }
-
   .most-listened {
     @apply p-2 rounded border;
     @apply flex-1;
     @apply flex flex-col gap-2;
+  }
+
+  .item-info {
+    @apply text-xs text-end;
   }
 }

@@ -8,15 +8,14 @@ const wrappedResult = shallowRef<WrappedResult>();
   <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
     <UploadButton v-model="wrappedResult" />
     
-    <Section v-if="!wrappedResult">
+    <Section 
+      v-if="!wrappedResult"
+      :title="'How to use this thing?'"
+    >
       <a class="absolute right-2 top-2" href="https://github.com/metkm/spoti-wrapped">
         <IconsGithub class="h-8 aspect-square" />
       </a>
-      
-      <template #head>
-        <p class="title">How to use this thing?</p>
-      </template>
-
+    
       <div class="p-4">
         <p>
           First, you should go to the <a href="https://www.spotify.com/us/account/privacy/" class="text-green-500">Spotify
@@ -33,87 +32,72 @@ const wrappedResult = shallowRef<WrappedResult>();
     </Section>
 
     <template v-else>
-      <Section>
-        <template #head>
-          <p class="title">How many times you've listened to same tracks?</p>
-        </template>
-        <StatsTracks :tracks="wrappedResult.trackPlayCounts" />
+      <Section
+        :title="'How many times you\'ve listened to same tracks?'"
+      >
+        <StatsTracksMostListened :tracks="wrappedResult.trackPlayCounts" />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">The albums you've listened the most.</p>
-        </template>
-
-        <StatsAlbums :albums="wrappedResult.albumPlayCounts" />
+      <Section
+        :title="'The albums you\'ve listened the most.'"
+      >
+        <StatsAlbumsMostListened :albums="wrappedResult.albumPlayCounts" />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">Dates with how much you've listened.</p>
-          <p class="desc"> Total of {{ msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed) }} minutes</p>
-        </template>
-
+      <Section
+        :title="'Dates with how much you\'ve listened.'"
+        :desc="`Total of ${msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed)} minutes`"
+      >
         <StatsTrackDate :dateNodes="wrappedResult.msPlayedByYears" />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">The reasons why your tracks are ended or started.</p>
-          <p class="desc">I don't have idea what most of these means either.</p>
-        </template>
-
+      <Section
+        :title="'The reasons why your tracks are ended or started.'"
+        :desc="'I don\'t have idea what most of these means either.'"
+      >
         <div class="flex flex-col gap-5">
           <div v-for="[key, value] in Object.entries(wrappedResult.skipEndReasons)">
             <p class="font-bold text-center">{{ key.toLocaleUpperCase() }}</p>
 
-            <StatsTrackStartEndReasons :reasons="value" />
+            <StatsTracksStartEndReasons :reasons="value" />
           </div>
         </div>
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">Incognito</p>
-          <p class="desc">Count of how many tracks you've listened to while you were in incognito mode.</p>
-        </template>
-
+      <Section
+        :title="'Incognito'"
+        :desc="'Count of how many tracks you\'ve listened to while you were in incognito mode.'"
+      >
         <StatsBar 
           :count="wrappedResult.incognitoCount"
           :totalCount="wrappedResult.totalRecordCount"
         />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">Shuffle</p>
-          <p class="desc">Count of how many times you left the shuffle mode open.</p>
-        </template>
-
+      <Section
+        :title="'Shuffle'"
+        :desc="'Count of how many times you left the shuffle mode open.'"
+      >
         <StatsBar 
           :count="wrappedResult.shuffleCount"
           :totalCount="wrappedResult.totalRecordCount"
         />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">Offline</p>
-          <p class="desc">Count of whether the track was played in offline mode.</p>
-        </template>
-
+      <Section
+        :title="'Offline'"
+        :desc="'Count of whether the track was played in offline mode.'"
+      >
         <StatsBar 
           :count="wrappedResult.offlineCount"
           :totalCount="wrappedResult.totalRecordCount"
         />
       </Section>
 
-      <Section>
-        <template #head>
-          <p class="title">Skipped Tracks</p>
-          <p class="desc">Tracks that you skipped the most.</p>
-        </template>
-
+      <Section
+        :title="'Skipped Tracks'"
+        :desc="'Tracks that you skipped the most.'"
+      >
         <StatsTracksMostSkipped :tracks="wrappedResult.trackPlayCounts" />
       </Section>
     </template>
