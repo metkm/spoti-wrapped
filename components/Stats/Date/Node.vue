@@ -30,17 +30,18 @@ defineProps<{
           <div class="flex gap-2">
             <div class="most-listened">
               <p class="text-xs">Song you've listened to most.</p>
-              <StatsTrackMostListened :songs="value.songsListened" />
+              <StatsDateNodeMostListenedTrack :songs="value.songsListened" />
             </div>
             <div class="most-listened">
               <p class="text-xs">Album you've listened to most.</p>
-              <StatsAlbumMostListened :albums="value.albumsListened" />
+              <StatsDateNodeMostListenedAlbum :albums="value.albumsListened" />
             </div>
           </div>
         </div>
 
-        <StatsShowMore v-if="value.name !== 'Day'" v-model="hidePercentage" :nodes="value" />
+        <StatsDateNodeShowMore v-if="value.name !== 'Day'" v-model="hidePercentage" :nodes="value" />
       </div>
     </div>
   </div>
 </template>
+

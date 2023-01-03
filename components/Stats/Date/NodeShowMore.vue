@@ -22,6 +22,7 @@ const clickHandler = () => {
 
   <div class="transition-all duration-500 min-h-0 overflow-hidden grid"
     :class="isClosed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr] p-2'">
-    <StatsTrackDate v-show="!isClosed" :dateNodes="nodes" />
+    <StatsDateNode v-show="!isClosed" :dateNodes="nodes" />
   </div>
 </template>
+
