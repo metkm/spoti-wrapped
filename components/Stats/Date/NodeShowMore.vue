@@ -15,7 +15,7 @@ const clickHandler = () => {
 </script>
 
 <template>
-  <button @click="clickHandler" class="shadow rounded-lg p-2 px-4 border bg-white absolute top-0 right-0"
+  <button @click="clickHandler" class="p-2 border rounded transition"
     :class="{ '!bg-green-500 text-white': !isClosed }">
     {{ isClosed ? "Show More" : "Show less" }}
   </button>
