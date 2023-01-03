@@ -15,13 +15,13 @@ const clickHandler = () => {
 </script>
 
 <template>
-  <button
-    @click="clickHandler" 
-    class="shadow rounded-lg p-2 px-4 border bg-white absolute top-0 right-0"
-    :class="{ '!bg-green-500 text-white': !isClosed }"
-  >
+  <button @click="clickHandler" class="shadow rounded-lg p-2 px-4 border bg-white absolute top-0 right-0"
+    :class="{ '!bg-green-500 text-white': !isClosed }">
     {{ isClosed ? "Show More" : "Show less" }}
   </button>
 
-  <StatsTrackDate v-if="!isClosed" :dateNodes="nodes" />
+  <div class="transition-all duration-500 min-h-0 overflow-hidden grid"
+    :class="isClosed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr] p-2'">
+    <StatsTrackDate v-show="!isClosed" :dateNodes="nodes" />
+  </div>
 </template>

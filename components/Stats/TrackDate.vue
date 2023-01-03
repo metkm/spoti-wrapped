@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 min-h-0">
     <div 
       v-for="[key, value] in Object.entries(dateNodes.nodes)"
       class="p-2 lg:p-4 relative shadow border-y"
