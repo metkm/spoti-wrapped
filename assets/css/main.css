@@ -15,6 +15,12 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+
+  .grid-row-animation {
+    @apply grid grid-rows-[0fr];
+    @apply min-h-0 overflow-hidden;
+    @apply transition-all duration-500;
+  }
 }
 
 @layer components {

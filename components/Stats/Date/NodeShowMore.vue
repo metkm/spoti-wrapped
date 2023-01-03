@@ -20,8 +20,7 @@ const clickHandler = () => {
     {{ isClosed ? "Show More" : "Show less" }}
   </button>
 
-  <div class="transition-all duration-500 min-h-0 overflow-hidden grid"
-    :class="isClosed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr] p-2'">
+  <div class="grid-row-animation" :class="{ '!grid-rows-[1fr] p-2': !isClosed }">
     <StatsDateNode v-show="!isClosed" :dateNodes="nodes" />
   </div>
 </template>
