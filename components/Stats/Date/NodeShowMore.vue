@@ -7,9 +7,20 @@ defineProps<{
 }>();
 const emit = defineEmits(["update:modelValue"]);
 const isClosed = ref(true);
+const isClosedDelayed = ref(true);
 
 const clickHandler = () => {
   isClosed.value = !isClosed.value;
+
+  // closed
+  if (isClosed.value) {
+    setTimeout(() => {
+      isClosedDelayed.value = isClosed.value;
+    }, 1000);
+  } else {
+    isClosedDelayed.value = isClosed.value;
+  }
+
   emit("update:modelValue", !isClosed.value);
 }
 </script>
@@ -21,7 +32,7 @@ const clickHandler = () => {
   </button>
 
   <div class="grid-row-animation" :class="{ '!grid-rows-[1fr] p-2': !isClosed }">
-    <StatsDateNode v-show="!isClosed" :dateNodes="nodes" />
+    <StatsDateNode v-if="!isClosedDelayed" :dateNodes="nodes" />
   </div>
 </template>
 
