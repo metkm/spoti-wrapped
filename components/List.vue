@@ -1,8 +1,6 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends any">
 const { items, sort } = defineProps<{
-  items: {
-    [key: string]: any
-  },
+  items: Record<string, T>,
   sort?: (first: any, second: any) => number,
 }>();
 
