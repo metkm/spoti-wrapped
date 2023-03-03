@@ -11,15 +11,16 @@ values = values.slice(0, 20);
 </script>
 
 <template>
-  <div class="divide-y">
-    <div 
+  <ul class="divide-y">
+    <li 
       v-for="[key, value] in values"
       class="grid grid-cols-2 items-center hover:bg-neutral-100 p-2"
+      aria-label="Track"
     >
       <slot :key="key" :value="value">
         <p>{{ key }}</p>
         <p class="text-end">{{ value }}</p>
       </slot>
-    </div>
-  </div>
+    </li>
+  </ul>
 </template>

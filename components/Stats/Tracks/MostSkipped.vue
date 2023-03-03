@@ -12,7 +12,7 @@ const sort = ([_, first]: SortParam<TrackPlayCount>, [__, second]: SortParam<Tra
 </script>
 
 <template>
-  <List :items="tracks" :sort="sort" v-slot="{ value }">
+  <List :items="tracks" :sort="sort" v-slot="{ value }" aria-label="Most skipped tracks">
     <StatsTracksTrack :track="value" />
   </List>
 </template>

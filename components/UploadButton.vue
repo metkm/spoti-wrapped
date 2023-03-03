@@ -54,7 +54,7 @@ const upload = () => {
       class="bg-green-500 p-2 shadow-lg rounded-lg text-white hover:bg-red-500" 
       v-bind="$attrs"
     >
-      Upload
+      Upload your Spotify data!
     </button>
 
     <p v-if="currentStatus" class="text-center mt-2">{{ currentStatus }}</p>

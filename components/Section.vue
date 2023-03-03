@@ -6,12 +6,12 @@ defineProps<{
 </script>
 
 <template>
-  <div class="rounded-lg border shadow-log relative">
-    <div class="p-4 text-center">
-      <p class="text-xl">{{ title }}</p>
+  <section class="rounded-lg border shadow-log relative">
+    <header class="p-4 text-center">
+      <h1 class="text-xl">{{ title }}</h1>
       <p class="text-sm text-neutral-400">{{ desc }}</p>
-    </div>
+    </header>
     
     <slot></slot>
-  </div>
+  </section>
 </template>

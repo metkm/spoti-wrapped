@@ -9,6 +9,9 @@
     @apply min-h-screen;
     @apply font-inter;
   }
+
+  progress::-webkit-progress-bar   {background-color: rgb(229 229 229);}
+  progress::-webkit-progress-value {background-color: rgb(34 197 94);}
 }
 
 @layer utilities {

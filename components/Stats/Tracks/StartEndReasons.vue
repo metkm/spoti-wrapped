@@ -1,11 +1,9 @@
 <script setup lang="ts">
 defineProps<{
-  reasons: {
-    [key: string]: number
-  }
+  reasons: Record<string, number>
 }>()
 </script>
 
 <template>
-  <List :items="reasons" />
+  <List :items="reasons" aria-label="Start and end reasons" />
 </template>

@@ -1,23 +1,24 @@
 <script setup lang="ts">
-defineProps<{
+const { count, totalCount } = defineProps<{
   count: number,
   totalCount: number
 }>();
+
+const id = (totalCount / count).toString();
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="flex flex-col p-4">
     <div class="flex justify-between">
-      <p>{{ count }}</p>
-      <p>{{ totalCount }}</p>
+      <label :for="id">{{ count }}</label>
+      <label :for="id">{{ totalCount }}</label>
     </div>
-    <div class="relative h-10 rounded bg-neutral-200 overflow-hidden">
-      <div
-        class="absolute z-10 bg-green-500 inset-0"
-        :style="{
-          width: `${count / totalCount * 100}%`
-        }"
-      />
-    </div>
+
+    <progress
+      :id="id"
+      :value="count"
+      :max="totalCount"
+      class="w-full h-7 rounded overflow-hidden"
+    ></progress>
   </div>
 </template>
