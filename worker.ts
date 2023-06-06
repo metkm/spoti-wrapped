@@ -51,12 +51,18 @@ const prepareWrappedResult = (songs: Song[]) => {
     wrappedResult.albumPlayCounts[song.master_metadata_album_album_name] = 
       (wrappedResult.albumPlayCounts[song.master_metadata_album_album_name] || 0) + 1;
 
+    let date = new Date(song.ts);
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+
     if (!wrappedResult.trackPlayCounts[song.master_metadata_track_name]) {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name] = {
         song,
         listenCount: 1,
         skipCount: song.skipped ? 1 : 0,
-        totalMsPlayed: song.ms_played
+        totalMsPlayed: song.ms_played,
+        firstListenDate: date
       };
     } else {
       wrappedResult.trackPlayCounts[song.master_metadata_track_name].listenCount += 1;
@@ -65,11 +71,6 @@ const prepareWrappedResult = (songs: Song[]) => {
         wrappedResult.trackPlayCounts[song.master_metadata_track_name].skipCount += 1;
       }
     }
-
-    let date = new Date(song.ts);
-    let year = date.getFullYear();
-    let month = date.getMonth();
-    let day = date.getDate();
 
     // the year doesn't exist. create it.
     if (!wrappedResult.msPlayedByYears.nodes.hasOwnProperty(year)) {

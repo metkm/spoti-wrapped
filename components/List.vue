@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T extends any">
-const { items, sort } = defineProps<{
+const props = defineProps<{
   items: Record<string, T>,
   sort?: (first: any, second: any) => number,
 }>();
 
-let values = Object.entries(items);
-values.sort(sort);
+let values = Object.entries(props.items);
+values.sort(props.sort);
 
 values = values.slice(0, 20);
 </script>
@@ -14,6 +14,7 @@ values = values.slice(0, 20);
   <ul class="divide-y">
     <li 
       v-for="[key, value] in values"
+      :key="key"
       class="grid grid-cols-2 items-center hover:bg-neutral-100 p-2"
       aria-label="Track"
     >

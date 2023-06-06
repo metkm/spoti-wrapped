@@ -38,6 +38,10 @@ const wrappedResult = shallowRef<WrappedResult>();
         <StatsAlbumsMostListened :albums="wrappedResult.albumPlayCounts" />
       </Section>
 
+      <Section :title="'First time you listened to a song.'">
+        <StatsTracksFirstListened :tracks="wrappedResult.trackPlayCounts" />
+      </Section>
+
       <Section :title="'Dates with how much you\'ve listened.'"
         :desc="`Total of ${msToMinutes(wrappedResult.msPlayedByYears.totalMsPlayed)} minutes`">
         <StatsDateNode :dateNodes="wrappedResult.msPlayedByYears" />
