@@ -70,6 +70,11 @@ const prepareWrappedResult = (songs: Song[]) => {
       if (song.skipped) {
         wrappedResult.trackPlayCounts[song.master_metadata_track_name].skipCount += 1;
       }
+
+      let oldDate = wrappedResult.trackPlayCounts[song.master_metadata_track_name].firstListenDate;
+      if (date < oldDate) {
+        wrappedResult.trackPlayCounts[song.master_metadata_track_name].firstListenDate = date;
+      }
     }
 
     // the year doesn't exist. create it.
