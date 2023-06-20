@@ -12,5 +12,6 @@ export default defineNuxtConfig({
     head: {
       title: "Spotify Wrapped"
     }
-  }
+  },
+  plugins: [{ src: '~/plugins/vercel.ts', mode: 'client' }],
 })
