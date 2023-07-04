@@ -2,8 +2,6 @@ import readFile from "~/utils/ReadFile";
 import { WrappedResult, Song } from "~~/models/Song";
 import { Jobs } from "./models/Worker";
 
-const filenameRegex = /endsong_\d+/;
-
 const prepareWrappedResult = (songs: Song[]) => {
   let wrappedResult: WrappedResult = {
     msPlayedByYears: {
@@ -136,11 +134,6 @@ onmessage = async (event: MessageEvent<Jobs>) => {
       let parsedContents: Song[] = [];
 
       for (const file of event.data.args as FileList) {
-        if (!file.name.match(filenameRegex)) {
-          console.log("skipping", file.name);
-          continue;
-        }
-
         postMessage(`Reading ${file.name}. Size: ${file.size}`);
 
         let result = await readFile(file);
