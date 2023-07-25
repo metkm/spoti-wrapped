@@ -1,18 +1,23 @@
 <script setup lang="ts">
+const modelValue = defineModel();
+
 const process = () => {
-  console.log("test");
+  const worker = new Worker(
+    new URL("~/worker.ts", import.meta.url),
+    { type: "module" }
+  );
 }
 </script>
 
 <template>
-  <section class="space-y-5 p-4 text-slate-800 bg-slate-100 rounded-xl">
+  <section class="space-y-8 p-4 text-slate-800 bg-slate-100 rounded-xl">
     <h1 class="text-xl font-semibold text-center">How to use this thing?</h1>
 
     <div>
       <h2 class="font-semibold text-slate-600 bg-slate-300 rounded-full p-1 px-4 w-fit">If you have your data</h2>
       <p class="mt-2 ml-1">Unzip the files you've downloaded and press on upload Spotify data button. Select files that ends with .json extension.</p>
 
-      <BaseButton class="mt-2">
+      <BaseButton @click="process" class="mt-2">
         <template #icon>
           <IconsUpload />
         </template>

@@ -8,4 +8,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  vue: {
+    defineModel: true
+  }
 })
