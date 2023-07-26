@@ -1,4 +1,4 @@
-export const readFile = (file: File) => {
+export const readFile = (file: File): Promise<string> => {
   return new Promise(resolve => {
     const fileReader = new FileReader();
 

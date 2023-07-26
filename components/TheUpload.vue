@@ -5,15 +5,14 @@ const process = (event: Event) => {
   const element = event.target as HTMLInputElement;
   if (!element.files) return;
 
+  const worker = new Worker(new URL("~/worker.ts", import.meta.url), {
+    type: "module",
+  });
 
-
-  // const worker = new Worker(new URL("~/worker.ts", import.meta.url), {
-  //   type: "module",
-  // });
-
-  // worker.postMessage({
-  //   event: "update",
-  // });
+  worker.postMessage({
+    type: "files",
+    data: element.files
+  });
 };
 </script>
 
