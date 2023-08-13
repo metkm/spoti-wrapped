@@ -20,7 +20,7 @@ const example = async () => {
 
 <template>
   <main class="flex flex-col max-w-7xl mx-auto gap-4 p-2 lg:p-10">
-    <div class="flex gap-2">
+    <div class="space-y-2">
       <UploadButton v-model="wrappedResult" />
       <BaseButton @click="example">Show Example</BaseButton>
     </div>

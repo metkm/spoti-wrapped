@@ -50,6 +50,6 @@ const upload = () => {
       Upload your Spotify data
     </BaseButton>
 
-    <p v-if="currentStatus" class="text-center mt-2">{{ currentStatus }}</p>
+    <p v-if="currentStatus" class="mt-2">{{ currentStatus }}</p>
   </div>
 </template>
