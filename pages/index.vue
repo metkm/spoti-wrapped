@@ -2,11 +2,28 @@
 import { WrappedResult } from '~~/models/Song';
 
 const wrappedResult = shallowRef<WrappedResult>();
+
+const example = async () => {
+  const data = await import("../assets/example.json?raw");
+  const worker = useWorker();
+
+  worker.postMessage({
+    job: "parseFiles",
+    contents: data.default
+  })
+
+  worker.addEventListener("message", (event: MessageEvent<WrappedResult>) => {
+    wrappedResult.value = event.data;
+  })
+}
 </script>
 
 <template>
   <main class="flex flex-col max-w-7xl mx-auto gap-4 p-2 lg:p-10">
-    <UploadButton v-model="wrappedResult" />
+    <div class="flex gap-2">
+      <UploadButton v-model="wrappedResult" />
+      <BaseButton @click="example">Show Example</BaseButton>
+    </div>
 
     <Section v-if="!wrappedResult" :title="'How to use this thing?'" class="flex flex-col gap-4 p-4">
       <a class="absolute right-2 top-2" href="https://github.com/metkm/spoti-wrapped">

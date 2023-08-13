@@ -133,6 +133,13 @@ onmessage = async (event: MessageEvent<Jobs>) => {
     case "parseFiles":
       let parsedContents: Song[] = [];
 
+      if (event.data.contents) {
+        let contents = JSON.parse(event.data.contents) as Song[];
+        let result = prepareWrappedResult(contents);
+        postMessage(result);
+        return;
+      }
+
       for (const file of event.data.args as FileList) {
         postMessage(`Reading ${file.name}. Size: ${file.size}`);
 

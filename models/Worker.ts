@@ -7,5 +7,6 @@ type Args = {
 
 export interface Jobs {
   job: Job,
-  args: Args[Job]
+  args: Args[Job],
+  contents?: string
 }
