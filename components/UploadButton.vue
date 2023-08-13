@@ -1,9 +1,3 @@
-<script lang="ts">
-export default {
-  inheritAttrs: false
-}
-</script>
-
 <script setup lang="ts">
 import { WrappedResult } from '~~/models/Song';
 
@@ -48,14 +42,13 @@ const upload = () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <button
-      @click="upload"
-      class="bg-green-500 p-2 shadow-lg rounded-lg text-white hover:bg-red-500" 
-      v-bind="$attrs"
-    >
-      Upload your Spotify data!
-    </button>
+  <div>
+    <BaseButton @click="upload">
+      <template #icon>
+        <IconsUpload class="fill-white" />
+      </template>
+      Upload your Spotify data
+    </BaseButton>
 
     <p v-if="currentStatus" class="text-center mt-2">{{ currentStatus }}</p>
   </div>

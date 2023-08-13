@@ -5,15 +5,15 @@ const wrappedResult = shallowRef<WrappedResult>();
 </script>
 
 <template>
-  <main class="flex flex-col max-w-7xl mx-auto gap-5 p-2 lg:p-10">
+  <main class="flex flex-col max-w-7xl mx-auto gap-4 p-2 lg:p-10">
     <UploadButton v-model="wrappedResult" />
 
-    <Section v-if="!wrappedResult" :title="'How to use this thing?'">
+    <Section v-if="!wrappedResult" :title="'How to use this thing?'" class="flex flex-col gap-4 p-4">
       <a class="absolute right-2 top-2" href="https://github.com/metkm/spoti-wrapped">
         <IconsGithub class="h-8 aspect-square" />
       </a>
 
-      <div class="p-4">
+      <div>
         <p>
           First, you should go to the <a href="https://www.spotify.com/us/account/privacy/"
             class="text-green-500">Spotify
