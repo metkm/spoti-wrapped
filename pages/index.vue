@@ -25,12 +25,12 @@ const example = async () => {
       <BaseButton @click="example">Show Example</BaseButton>
     </div>
 
-    <Section v-if="!wrappedResult" :title="'How to use this thing?'" class="flex flex-col gap-4 p-4">
+    <Section v-if="!wrappedResult" :title="'How to use this thing?'">
       <a class="absolute right-2 top-2" href="https://github.com/metkm/spoti-wrapped">
         <IconsGithub class="h-8 aspect-square" />
       </a>
 
-      <div>
+      <div class="p-4">
         <p>
           First, you should go to the <a href="https://www.spotify.com/us/account/privacy/"
             class="text-green-500">Spotify
