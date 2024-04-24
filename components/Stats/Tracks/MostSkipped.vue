@@ -1,18 +1,44 @@
 <script setup lang="ts">
-import { TrackPlayCount, TrackPlayCounts } from "~/models/Song";
-import { SortParam } from "~/models/list";
+import { TrackPlayCounts } from "~/models/Song";
+import { refDebounced } from "@vueuse/core";
 
-const { tracks } = defineProps<{
-  tracks: TrackPlayCounts
+const props = defineProps<{
+  tracks: TrackPlayCounts;
 }>();
 
-const sort = ([_, first]: SortParam<TrackPlayCount>, [__, second]: SortParam<TrackPlayCount>): number => {
-  return second.skipCount - first.skipCount;
-}
+const query = ref("");
+const queryDebounced = refDebounced(query, 1000);
+
+const results = computed(() => {
+  
+
+  return Object.values(props.tracks)
+    .sort((a, b) => b.skipCount - a.skipCount)
+    .filter((value) =>
+      value.song.master_metadata_track_name
+        ?.toLowerCase()
+        .includes(queryDebounced.value.toLowerCase())
+    )
+    .slice(0, 20)
+});
 </script>
 
 <template>
-  <List :items="tracks" :sort="sort" v-slot="{ value }" aria-label="Most skipped tracks">
-    <StatsTracksTrack :track="value" />
-  </List>
+  <div>
+    <input
+      v-model="query"
+      class="rounded border px-4 py-2 m-4"
+      placeholder="Search tracks"
+    />
+
+    <ul class="divide-y">
+      <li
+        v-for="res in results"
+        :key="res.totalMsPlayed"
+        class="flex justify-between p-2 hover:bg-neutral-100"
+      >
+        <StatsTracksTrack :track="res" />
+      </li>
+    </ul>
+  </div>
 </template>

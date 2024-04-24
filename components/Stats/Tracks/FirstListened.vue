@@ -11,8 +11,6 @@ const query = ref("");
 const queryDebounced = refDebounced(query, 1000);
 
 const results = computed(() => {
-  console.log("trigger");
-
   let x = Object.entries(tracks).filter(([key, value]) =>
     value.song.master_metadata_track_name
       ?.toLowerCase()
