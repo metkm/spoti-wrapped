@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+html {
+  font-family: "Inter", sans-serif;
+  @apply font-medium;
+}
+
+html, body, #nuxt {
+  @apply min-h-screen;
+  @apply w-screen overflow-x-hidden;
+}
+
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-200 dark:bg-[rgb(var(--color-primary-400))] rounded-full;
+}
+
+.fade-enter-active,
+.fade-leave-active,
+.list-enter-active,
+.list-leave-active,
+.list-move {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+.fade-enter-from,
+.fade-leave-to,
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+}
+
+.list-leave-active {
+  position: absolute;
+}
+
+.overflow-fade {
+  mask-image: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0) 100%
+  )
+}
