@@ -14,11 +14,11 @@ const queryDebounced = refDebounced(query, 1000)
 
 const ids = computed(() => {
   if (queryDebounced.value.length > 2 || orderBy.value) {
-    let filtered = Object.entries(props.dates)
-      .filter(([_, res]) => {
-        const masterTrackName = res.history.master_metadata_track_name?.toLowerCase()
-        return masterTrackName?.includes(queryDebounced.value.toLowerCase())
-      })
+    let filtered = Object.entries(props.dates).filter(([_, res]) => {
+      const masterTrackName
+        = res.history.master_metadata_track_name?.toLowerCase()
+      return masterTrackName?.includes(queryDebounced.value.toLowerCase())
+    })
 
     filtered = filtered.slice(0, 50)
 
@@ -28,13 +28,14 @@ const ids = computed(() => {
         const bId = getSongId(b.history)
 
         if (!aId || !bId) return 0
-        return (props.counts[orderBy.value!.value][bId] || 0) - (props.counts[orderBy.value!.value][aId] || 0)
+        return (
+          (props.counts[orderBy.value!.value][bId] || 0)
+          - (props.counts[orderBy.value!.value][aId] || 0)
+        )
       })
     }
 
-    return filtered
-      .map(([id]) => id)
-      .join(',')
+    return filtered.map(([id]) => id).join(',')
   }
 
   return Object.keys(props.dates).slice(0, 20)
@@ -59,14 +60,19 @@ const options: FilterOption[] = [
 ]
 
 const exportCsv = () => {
-  const arr = [['id', 'track', 'listen count']]
+  const arr = [['id', 'track', 'listen count', 'skip count']]
 
   const entries = Object.entries(props.counts.listen)
   for (let index = 0; index < entries.length; index++) {
     const [id, count] = entries[index]!
     const history = props.historyByTrackId[id]
 
-    arr.push([id, history?.master_metadata_track_name || 'unknown', count.toString()])
+    arr.push([
+      id,
+      history?.master_metadata_track_name || 'unknown',
+      count.toString(),
+      props.counts.skip[id]?.toString() || '0',
+    ])
   }
 
   arrayToCsv(arr)
@@ -74,7 +80,9 @@ const exportCsv = () => {
 </script>
 
 <template>
-  <BaseSection title="The dates of when you've listened to a song for the first time">
+  <BaseSection
+    title="The dates of when you've listened to a song for the first time"
+  >
     <template #top>
       <div class="flex flex-wrap items-end gap-2">
         <UFormGroup label="Order by">
@@ -112,7 +120,9 @@ const exportCsv = () => {
           v-for="track in data.tracks"
           :key="track.id"
           class="flex h-full w-full rounded-lg p-2 bg-center bg-cover aspect-square relative overflow-hidden"
-          :style="{ backgroundImage: `url('${track.album.images.at(1)?.url}')` }"
+          :style="{
+            backgroundImage: `url('${track.album.images.at(1)?.url}')`,
+          }"
         >
           <div class="flex flex-col justify-between max-w-full w-full z-10">
             <div class="flex flex-wrap gap-2">
@@ -138,7 +148,12 @@ const exportCsv = () => {
                     name="i-heroicons-clock-16-solid"
                     class="text-base"
                   />
-                  <p>{{ Math.floor(counts.totalMsPlayed[track.id]! / 1000 / 60) }} min</p>
+                  <p>
+                    {{
+                      Math.floor(counts.totalMsPlayed[track.id]! / 1000 / 60)
+                    }}
+                    min
+                  </p>
                 </UBadge>
               </UTooltip>
             </div>
