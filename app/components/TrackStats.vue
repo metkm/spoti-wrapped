@@ -59,7 +59,7 @@ const options: FilterOption[] = [
 ]
 
 const exportCsv = () => {
-  const arr = [['id', 'track', 'count']]
+  const arr = [['id', 'track', 'listen count']]
 
   const entries = Object.entries(props.counts.listen)
   for (let index = 0; index < entries.length; index++) {
