@@ -141,7 +141,7 @@ const exportCsv = () => {
 
               <UTooltip
                 v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 60_000"
-                text="How much you've listened to this track. In minutes"
+                :text="`How much you've listened to this track. ${counts.listen[track.id]} times`"
               >
                 <UBadge class="space-x-1">
                   <UIcon
