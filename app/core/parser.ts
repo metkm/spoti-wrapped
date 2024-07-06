@@ -30,6 +30,7 @@ const updateNodeSong = (node: Node, history: History, songId: string) => {
 onmessage = async (event: MessageEvent<{ fileList: File[] }>) => {
   const result: Parsed = {
     history: [],
+    historyByTrackId: {},
     counts: {
       skip: {},
       listen: {},
@@ -60,6 +61,8 @@ onmessage = async (event: MessageEvent<{ fileList: File[] }>) => {
 
       const songId = getSongId(history)
       if (!songId) continue
+
+      result.historyByTrackId[songId] = history
 
       if (history.skipped) {
         updateKeyCount(songId, result.counts.skip)

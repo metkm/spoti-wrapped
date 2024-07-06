@@ -128,6 +128,7 @@ watch(data, () => {
       <TrackStats
         :dates="data.dates"
         :counts="data.counts"
+        :history-by-track-id="data.historyByTrackId"
       />
       <History :nodes="data.history" />
       <Reasons :reasons="data.reasons" />

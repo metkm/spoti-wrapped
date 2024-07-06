@@ -25,6 +25,7 @@ export interface Reasons {
 
 export interface Parsed {
   history: Node[]
+  historyByTrackId: Record<string, History>
   counts: Counts
   dates: Record<string, { date: Date, history: History }>
   reasons: Reasons

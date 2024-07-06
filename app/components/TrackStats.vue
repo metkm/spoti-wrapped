@@ -5,6 +5,7 @@ import type { Track } from '~/models/track'
 const props = defineProps<{
   dates: Parsed['dates']
   counts: Parsed['counts']
+  historyByTrackId: Parsed['historyByTrackId']
 }>()
 
 const orderBy = ref<FilterOption>()
@@ -56,19 +57,34 @@ const options: FilterOption[] = [
     label: 'Most Skipped',
   },
 ]
+
+const exportCsv = () => {
+  const arr = [['id', 'track', 'count']]
+
+  const entries = Object.entries(props.counts.listen)
+  for (let index = 0; index < entries.length; index++) {
+    const [id, count] = entries[index]!
+    const history = props.historyByTrackId[id]
+
+    arr.push([id, history?.master_metadata_track_name || 'unknown', count.toString()])
+  }
+
+  arrayToCsv(arr)
+}
 </script>
 
 <template>
   <BaseSection title="The dates of when you've listened to a song for the first time">
     <template #top>
-      <div class="flex flex-wrap items-center gap-2">
-        <p>Order By</p>
-        <USelectMenu
-          v-model="orderBy"
-          placeholder="Order By"
-          :options="options"
-          class="w-48"
-        />
+      <div class="flex flex-wrap items-end gap-2">
+        <UFormGroup label="Order by">
+          <USelectMenu
+            v-model="orderBy"
+            placeholder="Order By"
+            :options="options"
+            class="w-48"
+          />
+        </UFormGroup>
 
         <UButton
           v-if="orderBy"
@@ -83,6 +99,10 @@ const options: FilterOption[] = [
           :loading="status === 'pending'"
           icon="i-heroicons-magnifying-glass-solid"
         />
+
+        <UButton @click="exportCsv">
+          Export
+        </UButton>
       </div>
     </template>
 
