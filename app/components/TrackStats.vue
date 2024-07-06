@@ -94,7 +94,7 @@ const options: FilterOption[] = [
           class="flex h-full w-full rounded-lg p-2 bg-center bg-cover aspect-square relative overflow-hidden"
           :style="{ backgroundImage: `url('${track.album.images.at(1)?.url}')` }"
         >
-          <div class="flex flex-col justify-between max-w-full z-10">
+          <div class="flex flex-col justify-between max-w-full w-full z-10">
             <div class="flex flex-wrap gap-2">
               <UTooltip
                 v-if="counts.skip[track.id] && counts.skip[track.id]! > 0"
@@ -113,9 +113,7 @@ const options: FilterOption[] = [
                 v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 60_000"
                 text="How much you've listened to this track. In minutes"
               >
-                <UBadge
-                  class="space-x-1"
-                >
+                <UBadge class="space-x-1">
                   <UIcon
                     name="i-heroicons-clock-16-solid"
                     class="text-base"
@@ -126,16 +124,23 @@ const options: FilterOption[] = [
             </div>
 
             <div class="truncate">
-              <p
-                v-if="dates[track.id]"
-                class="font-semibold text-xl"
-              >
-                {{ new Date(dates[track.id]!.date).toLocaleDateString() }}
-              </p>
+              <UTooltip text="First time you've listened to this track">
+                <p
+                  v-if="dates[track.id]"
+                  class="font-semibold text-xl"
+                >
+                  {{ new Date(dates[track.id]!.date).toLocaleDateString() }}
+                </p>
+              </UTooltip>
 
-              <p class="truncate">
-                {{ track.name }}
-              </p>
+              <UTooltip
+                :text="track.name"
+                class="block"
+              >
+                <p class="truncate">
+                  {{ track.name }}
+                </p>
+              </UTooltip>
             </div>
           </div>
 
