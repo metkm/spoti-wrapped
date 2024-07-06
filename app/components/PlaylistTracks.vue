@@ -20,35 +20,30 @@ const {
   data: trackList,
   status,
   refresh,
-} = await useSpotifyFetch<Pagination<TrackItem> | null>({
-  url: `https://api.spotify.com/v1/playlists/${props.id}/tracks`,
+} = await useSpotifyFetch<Pagination<TrackItem>>(`https://api.spotify.com/v1/playlists/${props.id}/tracks`, {
   key: `playlist:${props.id}`,
-  options: {
-    params: {
-      offset: offset.value,
-    },
+  params: {
+    offset: offset.value,
   },
-  optionsAsyncData: {
-    transform: (response) => {
-      if (response) {
-        for (let index = 0; index < response.items.length; index++) {
-          const element = response.items[index]
-          if (!element) continue
+  transform: (response: Pagination<TrackItem>) => {
+    if (response) {
+      for (let index = 0; index < response.items.length; index++) {
+        const element = response.items[index]
+        if (!element) continue
 
-          const isFound = trackItems.value.some((trackItem) => {
-            return trackItem.track.id === element.track.id
-          })
+        const isFound = trackItems.value.some((trackItem) => {
+          return trackItem.track.id === element.track.id
+        })
 
-          if (isFound) continue
+        if (isFound) continue
 
-          trackItems.value.push(element)
-        }
+        trackItems.value.push(element)
       }
+    }
 
-      return response
-    },
-    watch: [page],
+    return response
   },
+  watch: [page],
 })
 
 useInfiniteScroll(

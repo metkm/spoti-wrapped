@@ -7,12 +7,9 @@ defineProps<{
   counts: Parsed['counts']
 }>()
 
-const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>({
+const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>('/me/playlists', {
   key: 'playlists',
-  url: '/me/playlists',
-  optionsAsyncData: {
-    lazy: true,
-  },
+  lazy: true,
 })
 
 const { width } = useWindowSize()

@@ -39,17 +39,11 @@ const ids = computed(() => {
   return Object.keys(props.dates).slice(0, 20)
 })
 
-const { data, status } = await useSpotifyFetch<{ tracks: Track[] }>({
-  key: 'tracks',
-  url: '/tracks',
-  options: {
-    params: {
-      ids: ids.value,
-    },
+const { data, status } = await useSpotifyFetch<{ tracks: Track[] }>('/tracks', {
+  params: {
+    ids,
   },
-  optionsAsyncData: {
-    lazy: true,
-  },
+  lazy: true,
 })
 
 const options: FilterOption[] = [

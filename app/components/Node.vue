@@ -18,20 +18,14 @@ const nodeMostListenedTrackIds = computed(() =>
   props.nodeList.map(node => getSongId(node.mostListenedSong)).join(','),
 )
 
-const { data: cache } = useNuxtData<{ tracks: Track[] } | undefined>(
-  `tracks:${nodeMostListenedTrackIds.value}`,
-)
-const { data } = await useSpotifyFetch<{ tracks: Track[] } | undefined>({
-  key: `tracks:${nodeMostListenedTrackIds.value}`,
-  url: '/tracks',
-  options: {
-    params: {
-      ids: nodeMostListenedTrackIds.value,
-    },
+const key = `tracks:${nodeMostListenedTrackIds.value}`
+const { data: cache } = useNuxtData<{ tracks: Track[] } | undefined>(key)
+const { data } = await useSpotifyFetch<{ tracks: Track[] } | undefined>('/tracks', {
+  key: key,
+  params: {
+    ids: nodeMostListenedTrackIds,
   },
-  optionsAsyncData: {
-    getCachedData: () => cache.value,
-  },
+  getCachedData: () => cache.value,
 })
 
 const trackCache = computed(() => {
