@@ -35,7 +35,7 @@ const mostListened = computed(() => {
 <template>
   <BaseSection>
     <template #top>
-      <div class="flex items-center gap-4">
+      <div class="flex items-end gap-4">
         <UFormGroup label="Order by">
           <USelectMenu
             v-model="orderBy"
