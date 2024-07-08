@@ -50,10 +50,11 @@ const redirectToAuth = async () => {
 
 const parseExample = async () => {
   loading.value = true
-  const data = await import('~/assets/example.json?raw')
-  const dataBlob = new Blob([data.default], { type: 'text/plain' })
 
-  const file = new File([dataBlob], 'example')
+  const response = await fetch('/example.json')
+  const blob = await response.blob()
+
+  const file = new File([blob], 'example')
 
   worker.postMessage({ fileList: [file] })
   loading.value = false
