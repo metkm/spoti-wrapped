@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="T">
+import { breakpointsTailwind } from '@vueuse/core'
 import type { Pagination } from '~/models/pagination'
 import type { Playlist } from '~/models/playlist'
 import type { Parsed } from '~/models/parsed'
@@ -14,36 +15,60 @@ const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>('/
 
 const { width } = useWindowSize()
 const { bgImage, updateColorsFromImageElement } = useTheme()
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
+const isLarge = breakpoints.greater('lg')
+
+const container = ref<HTMLElement>()
 const selectedPlaylist = ref<Playlist>()
+const selectedIndex = computed(() => data.value?.items.findIndex(item => item.id === selectedPlaylist.value?.id))
 
-const padding = computed(() => width.value / 2 - 384 / 2)
+const offset = computed(() =>
+  (width.value / 2) - ((isLarge.value ? 640 : 320) / 2) - ((selectedIndex.value || 0) * (isLarge.value ? 384 : 320)),
+)
 
-let scrolling = false
-const selectPlaylist = async (payload: MouseEvent, playlist: Playlist) => {
-  if (scrolling) {
-    return
-  }
-
+const selectPlaylist = async (playlist: Playlist) => {
   bgImage.value = playlist.images?.at(0)?.url
-
-  scrolling = true
-  const element = payload.target as HTMLElement
-
-  element.scrollIntoView({
-    inline: 'center',
-    behavior: 'smooth',
-    block: 'center',
-  })
-
-  await sleep(500)
-  scrolling = false
   selectedPlaylist.value = playlist
 }
 
 const updateColor = (element: HTMLImageElement) => {
   updateColorsFromImageElement(element)
 }
+
+let startX = 0
+const handleTouchEvent = (direction: 'left' | 'right') => {
+  if (direction === 'left') {
+    const index = Math.max(0, (selectedIndex.value || 0) - 1)
+    selectedPlaylist.value = data.value?.items.at(index)
+  } else {
+    const index = Math.min(data.value?.items.length || 50, (selectedIndex.value || 0) + 1)
+    selectedPlaylist.value = data.value?.items.at(index)
+  }
+}
+
+onMounted(() => {
+  container.value?.addEventListener('touchstart', (event) => {
+    startX = event.touches[0]!.pageX
+  })
+
+  container.value?.addEventListener('touchmove', (event) => {
+    event.preventDefault()
+  })
+
+  container.value?.addEventListener('touchend', (event) => {
+    const touch = event.changedTouches.item(0)
+    if (!touch) return
+
+    const distance = touch.pageX - startX
+    handleTouchEvent(distance > 0 ? 'left' : 'right')
+  })
+})
+
+watchOnce(data, () => {
+  if (selectedPlaylist.value) return
+  selectedPlaylist.value = data.value?.items.at(0)
+})
 </script>
 
 <template>
@@ -74,32 +99,27 @@ const updateColor = (element: HTMLImageElement) => {
         />
       </div>
 
-      <div
-        class="flex items-center gap-4 overflow-x-auto py-4 snap-x no-scrollbar relative"
-        :style="{ paddingLeft: `${padding}px`, paddingRight: `${padding}px` }"
-      >
-        <template v-if="data && data?.items.length > 0">
-          <Playlist
+      <div class="relative overflox-x-hidden w-screen">
+        <ol
+          v-if="data"
+          ref="container"
+          class="flex w-screen transition-transform duration-300"
+          :style="{ transform: `translateX(${offset}px)` }"
+        >
+          <li
             v-for="playlist in data.items"
             :key="playlist.id"
-            :selected="playlist.id === selectedPlaylist?.id"
-            :class="{
-              'opacity-20':
-                selectedPlaylist && selectedPlaylist.id !== playlist.id,
-            }"
-            :counts
-            :playlist
-            @click="selectPlaylist($event, playlist)"
-            @update-color="updateColor"
-          />
-        </template>
-        <SkeletonPlaylists v-else-if="status === 'pending'" />
-        <p
-          v-else
-          class="text-center"
-        >
-          No playlists found
-        </p>
+            class="shrink-0"
+          >
+            <Playlist
+              :playlist="playlist"
+              :counts="counts"
+              :selected="playlist.id === selectedPlaylist?.id"
+              @click="selectPlaylist(playlist)"
+              @update-color="updateColor"
+            />
+          </li>
+        </ol>
       </div>
     </div>
   </div>
