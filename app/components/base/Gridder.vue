@@ -60,7 +60,7 @@ const select = (item: T, index: number) => {
 
 <template>
   <div
-    class="lg:grid gap-4 w-[30rem] lg:h-[55rem] justify-center transition-all"
+    class="lg:grid gap-4 w-[30rem] lg:h-[50rem] justify-center transition-all"
     :style="grids"
     :class="{ '!gap-0 lg:!w-60': !!modelValue }"
   >

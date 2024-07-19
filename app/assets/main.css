@@ -34,9 +34,15 @@ html, body, #nuxt {
 
 .fade-enter-from,
 .fade-leave-to,
-.list-enter-from,
-.list-leave-to {
+.list-enter-from {
   opacity: 0;
+  transform: translateX(30rem);
+}
+
+.list-leave-to {
+  scale: 0;
+  opacity: 0;
+  transform: translateX(30rem);
 }
 
 .list-leave-active {
