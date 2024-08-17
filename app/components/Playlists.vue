@@ -23,9 +23,15 @@ const container = ref<HTMLElement>()
 const selectedPlaylist = ref<Playlist>()
 const selectedIndex = computed(() => data.value?.items.findIndex(item => item.id === selectedPlaylist.value?.id))
 
-const offset = computed(() =>
-  (width.value / 2) - ((isLarge.value ? 640 : 320) / 2) - ((selectedIndex.value || 0) * (isLarge.value ? 384 : 320)),
-)
+const offset = computed(() => {
+  const half = width.value / 2
+  const playlistSize = isLarge.value ? 640 : 320
+  const playlistSizeSelected = isLarge.value ? 384 : 320
+
+  const currentIndex = selectedIndex.value || 0
+
+  return half - (playlistSize / 2) - (currentIndex * playlistSizeSelected)
+})
 
 const selectPlaylist = async (playlist: Playlist) => {
   bgImage.value = playlist.images?.at(0)?.url
@@ -67,7 +73,7 @@ onMounted(() => {
 
 watchOnce(data, () => {
   if (selectedPlaylist.value) return
-  selectedPlaylist.value = data.value?.items.at(0)
+  // selectedPlaylist.value = data.value?.items.at(0)
 })
 </script>
 
