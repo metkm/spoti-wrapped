@@ -30,7 +30,7 @@ const offset = computed(() => {
 
   const currentIndex = selectedIndex.value || 0
 
-  return half - (playlistSize / 2) - (currentIndex * playlistSizeSelected)
+  return half - (playlistSize / 2) - (currentIndex * playlistSizeSelected) - (currentIndex * 16)
 })
 
 const selectPlaylist = async (playlist: Playlist) => {
@@ -73,7 +73,7 @@ onMounted(() => {
 
 watchOnce(data, () => {
   if (selectedPlaylist.value) return
-  // selectedPlaylist.value = data.value?.items.at(0)
+  selectedPlaylist.value = data.value?.items.at(0)
 })
 </script>
 
@@ -109,7 +109,7 @@ watchOnce(data, () => {
         <ol
           v-if="data"
           ref="container"
-          class="flex w-screen transition-transform duration-300"
+          class="flex gap-4 w-screen transition-transform duration-300"
           :style="{ transform: `translateX(${offset}px)` }"
         >
           <li
