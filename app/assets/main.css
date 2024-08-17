@@ -33,7 +33,10 @@ html, body, #nuxt {
 }
 
 .fade-enter-from,
-.fade-leave-to,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .list-enter-from {
   opacity: 0;
   transform: translateX(30rem);
