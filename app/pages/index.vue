@@ -131,7 +131,7 @@ watch(data, () => {
         :counts="data.counts"
         :history-by-track-id="data.historyByTrackId"
       />
-      <History :nodes="data.history" />
+      <History :node-list="data.history" />
       <Reasons :reasons="data.reasons" />
       <Other :counts="data.counts" />
       <MostListened

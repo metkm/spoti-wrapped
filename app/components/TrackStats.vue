@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FilterOption, Parsed } from '~/models/parsed'
-import type { Track } from '~/models/track'
+import type { ResponseTracks } from '~/models/track'
 
 const props = defineProps<{
   dates: Parsed['dates']
@@ -41,7 +41,7 @@ const ids = computed(() => {
   return Object.keys(props.dates).slice(0, 20)
 })
 
-const { data, status } = await useSpotifyFetch<{ tracks: Track[] }>('/tracks', {
+const { data, status } = await useSpotifyFetch<ResponseTracks>('/tracks', {
   params: {
     ids,
   },

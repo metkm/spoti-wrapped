@@ -1,94 +1,63 @@
 <script setup lang="ts">
+import type { StyleValue } from 'vue'
 import type { Node } from '~/models/node'
-import type { Track } from '~/models/track'
+import type { ResponseTracks } from '~/models/track'
 
-const props = withDefaults(
-  defineProps<{
-    nodeList: Node[]
-    width?: number
-  }>(),
-  {
-    width: 3,
-  },
-)
+const props = defineProps<{
+  node: Node
+  tracksKey: string
+  selected?: boolean
+}>()
 
-const selectedNode = defineModel<Node>({ required: false })
+const modelValue = defineModel<Node>()
 
-const nodeMostListenedTrackIds = computed(() =>
-  props.nodeList.map(node => getSongId(node.mostListenedSong)).join(','),
-)
+const { data: cache } = useNuxtData<ResponseTracks>(props.tracksKey)
 
-const key = `tracks:${nodeMostListenedTrackIds.value}`
-const { data: cache } = useNuxtData<{ tracks: Track[] } | undefined>(key)
-const { data } = await useSpotifyFetch<{ tracks: Track[] } | undefined>('/tracks', {
-  key: key,
-  params: {
-    ids: nodeMostListenedTrackIds,
-  },
-  getCachedData: () => cache.value,
+const style = computed<StyleValue>(() => {
+  const songId = getSongId(props.node.mostListenedSong)
+  if (!songId) return
+
+  const track = cache.value?.tracks.find(track => track.id === songId)
+  if (!track) return
+
+  const image = track.album.images.at(1)
+  if (!image) return
+
+  return {
+    backgroundImage: `url(${image.url})`,
+  }
 })
 
-const trackCache = computed(() => {
-  const obj: Record<string, Track> = {}
+const containsNodes = computed(() => props.node.nodes.length > 0)
 
-  for (let index = 0; index < (data.value?.tracks.length || 0); index++) {
-    const track = data.value?.tracks[index]
-    if (!track) continue
-
-    obj[track.id] = track
-  }
-
-  return obj
+const Element = h(containsNodes.value ? 'button' : 'div', {
+  onClick: containsNodes.value
+    ? () => {
+        modelValue.value = props.node.id === modelValue.value?.id ? undefined : props.node
+      }
+    : undefined,
 })
 </script>
 
 <template>
-  <BaseGridder
-    v-slot="{ item, selected }"
-    v-model="selectedNode"
-    :items="nodeList"
-    :width
+  <component
+    :is="Element"
+    :style="style"
+    class="flex bg-center shrink-0 grow bg-cover items-end relative rounded-lg p-4 h-52 w-96 overflow-hidden transition-all"
+    :class="{ '!grow-[2]': selected }"
   >
-    <button
-      class="flex items-end text-left p-3 bg-center bg-cover relative w-full h-full"
-      :style="{ backgroundImage: `url('${trackCache[getSongId(item.mostListenedSong)!]?.album.images.at(1)?.url}')` }"
-    >
-      <div class="absolute inset-0 bg-black/60" />
+    <div class="absolute inset-0 backdrop-blur-lg fade-blur" />
 
-      <div
-        class="z-10 w-full h-full text-xs overflow-hidden"
-        :class="{ 'group': !selected, 'flex flex-col gap-4': selected }"
-      >
-        <div class="flex flex-col justify-between h-full group-hover:lg:-translate-y-full transition-transform delay-500">
-          <div>
-            <p class="opacity-70">
-              Minutes Listened
-            </p>
-            <p>{{ Math.round(item.totalMs / 1000 / 60) }}</p>
-          </div>
-
-          <div>
-            <p class="opacity-70">
-              Most Listened Album
-            </p>
-            <p class="truncate">
-              {{ item.mostListenedAlbum?.master_metadata_album_album_name }}
-            </p>
-          </div>
-        </div>
-
-        <div
-          class="group-hover:lg:-translate-y-full transition-transform delay-500"
-          :class="{ 'translate-y-0 grow': selected }"
-        >
-          <p class="font-semibold text-lg">
-            {{ item.label }} {{ item.id }}
-          </p>
-          <p class="truncate text-xs opacity-70">
-            {{ item.mostListenedSong.master_metadata_track_name }}
-          </p>
-        </div>
-      </div>
-    </button>
-  </BaseGridder>
+    <div class="z-10">
+      <p class="font-semibold text-lg">
+        {{ node.label }} {{ node.id }}
+      </p>
+    </div>
+  </component>
 </template>
+
+<style>
+.fade-blur {
+  mask-image: linear-gradient(to bottom, transparent, black);
+}
+</style>
