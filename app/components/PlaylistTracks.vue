@@ -68,7 +68,7 @@ const items = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 overflow-hidden p-2 rounded-lg">
+  <div class="flex flex-col gap-2 overflow-hidden h-full p-2 rounded-lg">
     <div class="flex items-center gap-2 z-10">
       <UButton
         leading-icon="i-heroicons-arrow-path-16-solid"

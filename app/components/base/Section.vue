@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <section
-    class="flex flex-col gap-4 p-4 bg-black/20 rounded-lg mx-auto max-w-7xl"
+    class="flex flex-col gap-4 p-4 bg-neutral-100 dark:bg-black/20 rounded-lg mx-auto max-w-7xl"
   >
     <div
       v-if="title || description || $slots.top"

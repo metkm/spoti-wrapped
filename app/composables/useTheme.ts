@@ -27,6 +27,9 @@ export const useTheme = () => {
   const palette = useState<TonalPalette>(() =>
     TonalPalette.fromInt(theme.value.schemes.dark.primary),
   )
+  const colorMode = useColorMode()
+
+  const scheme = computed(() => colorMode.value === 'dark' ? theme.value.schemes.dark : theme.value.schemes.light)
 
   const updateColorsFromImageElement = (element: HTMLImageElement) => {
     const thief = new ColorThief()
@@ -37,7 +40,7 @@ export const useTheme = () => {
     theme.value = themeFromSourceColor(argbFromRgb(...dominantColor))
 
     // update primary colors
-    palette.value = TonalPalette.fromInt(theme.value.schemes.dark.primary)
+    palette.value = TonalPalette.fromInt(scheme.value.primary)
 
     // update css variables
     for (let index = 0; index < 90; index += 10) {
@@ -54,6 +57,7 @@ export const useTheme = () => {
     bgImage,
     palette,
     theme,
+    scheme,
     updateColorsFromImageElement,
   }
 }

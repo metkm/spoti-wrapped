@@ -6,8 +6,8 @@ defineProps<{
   counts: Parsed['counts']
 }>()
 
-const { theme } = useTheme()
-const bgHex = computed(() => hexFromArgb(theme.value.schemes.dark.primaryContainer))
+const { scheme } = useTheme()
+const bgHex = computed(() => hexFromArgb(scheme.value.primaryContainer))
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ title: string, count: string | number }>()
 </script>
