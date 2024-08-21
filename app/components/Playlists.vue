@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T">
-import { breakpointsTailwind } from '@vueuse/core'
 import type { Pagination } from '~/models/pagination'
 import type { Playlist } from '~/models/playlist'
 import type { Parsed } from '~/models/parsed'
@@ -13,30 +12,15 @@ const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>('/
   lazy: true,
 })
 
-const { width } = useWindowSize()
 const { bgImage, updateColorsFromImageElement } = useTheme()
-const breakpoints = useBreakpoints(breakpointsTailwind)
-
-const isLarge = breakpoints.greater('lg')
 
 const container = ref<HTMLElement>()
 const selectedPlaylist = ref<Playlist>()
 const selectedIndex = computed(() => data.value?.items.findIndex(item => item.id === selectedPlaylist.value?.id))
 
-const offset = computed(() => {
-  const half = width.value / 2
-  const playlistSize = isLarge.value ? 640 : 320
-  const playlistSizeSelected = isLarge.value ? 384 : 320
-
-  const currentIndex = selectedIndex.value || 0
-
-  return half - (playlistSize / 2) - (currentIndex * playlistSizeSelected) - (currentIndex * 16)
+watch(selectedPlaylist, () => {
+  bgImage.value = selectedPlaylist.value?.images?.at(0)?.url
 })
-
-const selectPlaylist = async (playlist: Playlist) => {
-  bgImage.value = playlist.images?.at(0)?.url
-  selectedPlaylist.value = playlist
-}
 
 const updateColor = (element: HTMLImageElement) => {
   updateColorsFromImageElement(element)
@@ -104,7 +88,21 @@ watchOnce(data, () => {
         />
       </div>
 
-      <div class="relative overflox-x-hidden w-screen">
+      <BaseSwiper
+        v-if="data"
+        v-slot="{ item }"
+        v-model="selectedPlaylist"
+        :items="data.items"
+      >
+        <Playlist
+          :playlist="item"
+          :counts="counts"
+          :selected="item.id === selectedPlaylist?.id"
+          @update-color="updateColor"
+        />
+      </BaseSwiper>
+
+      <!-- <div class="relative overflox-x-hidden w-screen">
         <ol
           v-if="data"
           ref="container"
@@ -125,7 +123,7 @@ watchOnce(data, () => {
             />
           </li>
         </ol>
-      </div>
+      </div> -->
     </div>
   </BaseSection>
 </template>

@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends { id: number }">
+<script setup lang="ts" generic="T extends { id: number | string }">
 import { breakpointsTailwind } from '@vueuse/core'
 
 const props = defineProps<{
@@ -30,8 +30,6 @@ const offset = computed(() => {
   }
 
   const center = windowSize.width.value / 2
-
-  console.log(selectedIndex.value)
   return center - (itemWidth.value / 2) - (selectedIndex.value * itemWidth.value)
 })
 

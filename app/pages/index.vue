@@ -67,17 +67,6 @@ watch(data, () => {
   loading.value = false
   ready.value = true
 })
-
-const items = useState(() => {
-  const items: { id: number }[] = []
-  for (let index = 0; index < 20; index++) {
-    items.push({
-      id: index,
-    })
-  }
-
-  return items
-})
 </script>
 
 <template>
@@ -86,15 +75,6 @@ const items = useState(() => {
       v-if="!ready"
       class="absolute inset-0 -z-10 opacity-40"
     />
-
-    <BaseSwiper
-      v-slot="{ item }"
-      :items="items"
-    >
-      <p>
-        {{ item.id }}
-      </p>
-    </BaseSwiper>
 
     <BaseSection class="!max-w-2xl">
       <a
