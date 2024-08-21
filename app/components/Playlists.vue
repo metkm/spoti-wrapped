@@ -101,29 +101,6 @@ watchOnce(data, () => {
           @update-color="updateColor"
         />
       </BaseSwiper>
-
-      <!-- <div class="relative overflox-x-hidden w-screen">
-        <ol
-          v-if="data"
-          ref="container"
-          class="flex gap-4 w-screen transition-transform duration-300"
-          :style="{ transform: `translateX(${offset}px)` }"
-        >
-          <li
-            v-for="playlist in data.items"
-            :key="playlist.id"
-            class="shrink-0"
-          >
-            <Playlist
-              :playlist="playlist"
-              :counts="counts"
-              :selected="playlist.id === selectedPlaylist?.id"
-              @click="selectPlaylist(playlist)"
-              @update-color="updateColor"
-            />
-          </li>
-        </ol>
-      </div> -->
     </div>
   </BaseSection>
 </template>

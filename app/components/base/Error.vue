@@ -26,10 +26,11 @@ watch(
     <template #fallback>
       <slot name="loading">
         <div class="w-full h-full grid place-content-center">
-          <UIcon
+          <p>loading...</p>
+          <!-- <UIcon
             name="i-heroicons-arrow-path-20-solid"
             class="animate-spin text-4xl"
-          />
+          /> -->
         </div>
       </slot>
     </template>

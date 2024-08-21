@@ -30,7 +30,7 @@ const offset = computed(() => {
   }
 
   const center = windowSize.width.value / 2
-  return center - (itemWidth.value / 2) - (selectedIndex.value * itemWidth.value)
+  return center - (itemWidth.value / 2) - (selectedIndex.value * itemWidth.value) - (selectedIndex.value * 16)
 })
 
 onMounted(() => {
@@ -41,7 +41,7 @@ onMounted(() => {
 <template>
   <div class="overflow-x-hidden w-full">
     <ol
-      class="flex transition-all"
+      class="flex gap-4 transition-all duration-300"
       :style="{ transform: `translateX(${offset}px)` }"
     >
       <li

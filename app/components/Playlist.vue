@@ -55,7 +55,7 @@ whenever(
         {{ playlist.name }}
       </p>
 
-      <!-- <BaseError v-if="selected">
+      <BaseError v-if="selected">
         <Transition
           name="fade"
           appear
@@ -66,7 +66,7 @@ whenever(
             class="backdrop-blur-[200px]"
           />
         </Transition>
-      </BaseError> -->
+      </BaseError>
     </div>
   </div>
 </template>
