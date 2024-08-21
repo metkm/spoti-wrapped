@@ -47,7 +47,7 @@ whenever(
 
     <div class="absolute inset-0 bg-black/40" />
 
-    <div class="flex flex-col gap-4 p-4 z-10 h-full w-full">
+    <div class="flex flex-col gap-4 z-10 h-full w-full">
       <p
         v-if="!selected"
         class="font-semibold text-left ml-4 text-2xl"
