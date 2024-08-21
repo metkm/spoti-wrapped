@@ -9,10 +9,17 @@ const loading = ref(false)
 const ready = ref(false)
 const data = ref<Parsed>()
 
-const worker = new Worker(
-  new URL('~/core/parser.ts', import.meta.url),
-  { type: 'module' },
-)
+let worker: Worker | undefined
+onMounted(() => {
+  worker = new Worker(
+    new URL('~/core/parser.ts', import.meta.url),
+    { type: 'module' },
+  )
+
+  worker.addEventListener('message', (event: MessageEvent<Parsed>) => {
+    data.value = event.data
+  })
+})
 
 onChange((files) => {
   loading.value = true
@@ -29,11 +36,7 @@ onChange((files) => {
     fileList.push(file)
   }
 
-  worker.postMessage({ fileList })
-})
-
-worker.addEventListener('message', (event: MessageEvent<Parsed>) => {
-  data.value = event.data
+  worker?.postMessage({ fileList })
 })
 
 const redirectToAuth = async () => {
@@ -56,13 +59,24 @@ const parseExample = async () => {
 
   const file = new File([blob], 'example')
 
-  worker.postMessage({ fileList: [file] })
+  worker?.postMessage({ fileList: [file] })
   loading.value = false
 }
 
 watch(data, () => {
   loading.value = false
   ready.value = true
+})
+
+const items = useState(() => {
+  const items: { id: number }[] = []
+  for (let index = 0; index < 20; index++) {
+    items.push({
+      id: index,
+    })
+  }
+
+  return items
 })
 </script>
 
@@ -72,6 +86,15 @@ watch(data, () => {
       v-if="!ready"
       class="absolute inset-0 -z-10 opacity-40"
     />
+
+    <BaseSwiper
+      v-slot="{ item }"
+      :items="items"
+    >
+      <p>
+        {{ item.id }}
+      </p>
+    </BaseSwiper>
 
     <BaseSection class="!max-w-2xl">
       <a
