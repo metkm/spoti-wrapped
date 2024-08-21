@@ -78,12 +78,11 @@ watchOnce(data, () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex items-center gap-4 max-w-7xl p-2 mx-auto w-full">
-      <h1 class="text-xl font-semibold">
-        My Playlists
-      </h1>
-
+  <BaseSection
+    title="My Playlists"
+    remove-max-limit
+  >
+    <template #top>
       <UButton
         leading-icon="i-heroicons-arrow-path-16-solid"
         :loading="status === 'pending'"
@@ -93,7 +92,7 @@ watchOnce(data, () => {
       >
         Refresh Playlists
       </UButton>
-    </div>
+    </template>
 
     <div class="relative">
       <div class="absolute inset-0 inset-y-28 blur-[200px] bg-transition">
@@ -128,7 +127,7 @@ watchOnce(data, () => {
         </ol>
       </div>
     </div>
-  </div>
+  </BaseSection>
 </template>
 
 <style>
