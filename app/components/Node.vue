@@ -50,7 +50,7 @@ const trackCache = computed(() => {
     :width
   >
     <button
-      class="flex items-end text-left p-3 bg-center bg-cover relative w-full h-full"
+      class="flex items-end text-left p-3 bg-center bg-cover relative w-full h-full text-white"
       :style="{ backgroundImage: `url('${trackCache[getSongId(item.mostListenedSong)!]?.album.images.at(1)?.url}')` }"
     >
       <div class="absolute inset-0 bg-black/60" />

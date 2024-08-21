@@ -158,7 +158,7 @@ const exportCsv = () => {
               </UTooltip>
             </div>
 
-            <div class="truncate">
+            <div class="truncate text-white">
               <UTooltip text="First time you've listened to this track">
                 <p
                   v-if="dates[track.id]"

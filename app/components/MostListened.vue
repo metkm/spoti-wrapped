@@ -53,11 +53,11 @@ const mostListened = computed(() => {
       </div>
     </template>
 
-    <ol class="divide-y divide-[rgb(var(--color-primary-800))]">
+    <ol class="divide-[rgb(var(--color-primary-800))]/50">
       <li
         v-for="[title, value] in mostListened"
         :key="title"
-        class="flex justify-between p-2 hover:bg-[rgb(var(--color-primary-800))]"
+        class="flex justify-between p-2 hover:bg-[rgb(var(--color-primary-50))] dark:hover:bg-[rgb(var(--color-primary-800))]"
       >
         <p>{{ title }}</p>
 

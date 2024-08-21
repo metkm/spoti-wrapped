@@ -70,7 +70,7 @@ watch(data, () => {
   <main class="space-y-4 my-auto">
     <div
       v-if="!ready"
-      class="absolute inset-0 bg-gradient-to-br from-green-500 -z-10 opacity-40"
+      class="absolute inset-0 -z-10 opacity-40"
     />
 
     <BaseSection class="!max-w-2xl">

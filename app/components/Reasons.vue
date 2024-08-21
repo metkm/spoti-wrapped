@@ -6,8 +6,8 @@ defineProps<{
   reasons: Reasons
 }>()
 
-const { theme } = useTheme()
-const bgHex = computed(() => hexFromArgb(theme.value.schemes.dark.primaryContainer))
+const { scheme } = useTheme()
+const bgHex = computed(() => hexFromArgb(scheme.value.primaryContainer))
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ reason: Record<string, number> }>()
 </script>
@@ -18,7 +18,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ reason: Record<
       <li
         v-for="[key, value] in Object.entries(reason)"
         :key="key"
-        class="py-2 px-4 bg-neutral-700 rounded-lg"
+        class="py-2 px-4 bg-white dark:bg-neutral-700 rounded-lg"
         :style="{ background: bgHex }"
       >
         <p class="capitalize opacity-50">
@@ -31,11 +31,11 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ reason: Record<
   </DefineTemplate>
 
   <BaseSection title="Count of Start & End Reasons of Tracks">
-    <h1 class="bg-neutral-950 p-2 text-center -mx-4 opacity-50">
+    <h1 class="bg-neutral-200 dark:bg-neutral-950 p-2 text-center -mx-4 opacity-50">
       Start
     </h1>
     <ReuseTemplate :reason="reasons.start" />
-    <h1 class="bg-neutral-950 p-2 text-center -mx-4 opacity-50">
+    <h1 class="bg-neutral-200 dark:bg-neutral-950 p-2 text-center -mx-4 opacity-50">
       End
     </h1>
     <ReuseTemplate :reason="reasons.end" />

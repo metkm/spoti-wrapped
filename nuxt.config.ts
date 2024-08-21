@@ -13,9 +13,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  colorMode: {
-    preference: 'dark',
-  },
   runtimeConfig: {
     SPOTIFY_CLIENT_SECRET: '',
     public: {
