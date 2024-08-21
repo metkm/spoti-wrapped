@@ -43,7 +43,7 @@ const Element = h(containsNodes.value ? 'button' : 'div', {
   <component
     :is="Element"
     :style="style"
-    class="flex bg-center shrink-0 grow bg-cover items-end relative rounded-lg p-4 h-52 w-96 overflow-hidden transition-all"
+    class="flex bg-center shrink-0 grow bg-cover items-end relative rounded-lg w-full h-full p-4 overflow-hidden transition-all"
     :class="{ '!grow-[2]': selected }"
   >
     <div class="absolute inset-0 backdrop-blur-lg fade-blur" />

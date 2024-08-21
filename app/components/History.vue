@@ -14,7 +14,10 @@ watch(selectedYear, () => {
 </script>
 
 <template>
-  <BaseSection title="Years with stats">
+  <BaseSection
+    title="Years with stats"
+    remove-max-limit
+  >
     <BaseError>
       <NodeList :node-list="nodeList" />
     </BaseError>
