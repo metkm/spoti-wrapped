@@ -33,6 +33,7 @@ await useSpotifyFetch<ResponseTracks | undefined>('/tracks', {
       v-slot="{ item }"
       v-model="selectedNode"
       :items="nodeList"
+      fill-sides
     >
       <Node
         :node="item"
@@ -40,19 +41,9 @@ await useSpotifyFetch<ResponseTracks | undefined>('/tracks', {
         :selected="item.id === selectedNode?.id"
       />
     </BaseSwiper>
-    <!-- <ol class="flex gap-4 overflow-x-auto">
-      <Node
-        v-for="node in nodeList"
-        :key="node.id"
-        v-model="selectedNode"
-        :node="node"
-        :tracks-key="key"
-        :selected="node.id === selectedNode?.id"
-      />
-    </ol> -->
 
     <BaseError
-      v-if="selectedNode && selectedNode.nodes"
+      v-if="selectedNode && selectedNode.nodes.length > 0"
       :key="selectedNode.id"
     >
       <NodeList
