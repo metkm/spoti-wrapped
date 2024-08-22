@@ -68,6 +68,7 @@ const offset = computed(() => {
 })
 
 let startX = 0
+let startY = 0
 const handleTouchEvent = (direction: 'left' | 'right') => {
   if (direction === 'left') {
     const index = Math.max(0, (selectedIndex.value || 0) - 1)
@@ -83,15 +84,18 @@ onMounted(() => {
 
   containerElement.value?.addEventListener('touchstart', (event) => {
     startX = event.touches[0]!.pageX
+    startY = event.touches[0]!.pageY
   })
 
   containerElement.value?.addEventListener('touchend', (event) => {
     const touch = event.changedTouches.item(0)
     if (!touch) return
 
-    const distance = touch.pageX - startX
-    if (Math.abs(distance) > 30) {
-      handleTouchEvent(distance > 0 ? 'left' : 'right')
+    const distanceX = touch.pageX - startX
+    const distanceY = touch.pageY - startY
+
+    if (Math.abs(distanceX) > 40 && Math.abs(distanceY) < 20) {
+      handleTouchEvent(distanceX > 0 ? 'left' : 'right')
     }
   })
 })
