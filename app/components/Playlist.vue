@@ -37,7 +37,9 @@ whenever(
 </script>
 
 <template>
-  <div class="flex relative shrink-0 w-full h-full rounded-lg shadow-md shadow-black/30 overflow-hidden transition-all first:snap-center">
+  <div
+    class="flex relative shrink-0 w-full h-full rounded-lg shadow-md shadow-black/30 overflow-hidden transition-all first:snap-center"
+  >
     <img
       ref="element"
       :src="playlist.images?.at(0)?.url"
@@ -47,13 +49,15 @@ whenever(
 
     <div class="absolute inset-0 bg-black/40" />
 
-    <div class="flex flex-col gap-4 z-10 h-full w-full">
-      <p
+    <div class="flex flex-col gap-4 z-10 h-full w-full text-white">
+      <div
         v-if="!selected"
-        class="font-semibold text-left ml-4 text-2xl"
+        class="p-4"
       >
-        {{ playlist.name }}
-      </p>
+        <p class="font-semibold text-left text-2xl">
+          {{ playlist.name }}
+        </p>
+      </div>
 
       <BaseError v-if="selected">
         <Transition

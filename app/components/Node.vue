@@ -43,15 +43,39 @@ const Element = h(containsNodes.value ? 'button' : 'div', {
   <component
     :is="Element"
     :style="style"
-    class="flex bg-center shrink-0 grow bg-cover items-end relative rounded-lg w-full h-full p-4 overflow-hidden transition-all"
-    :class="{ '!grow-[2]': selected }"
+    class="flex w-full h-full bg-cover p-4 relative text-left text-white rounded-lg overflow-hidden"
   >
     <div class="absolute inset-0 backdrop-blur-lg fade-blur" />
 
-    <div class="z-10">
-      <p class="font-semibold text-lg">
-        {{ node.label }} {{ node.id }}
-      </p>
+    <div class="flex flex-col h-full justify-between z-10">
+      <div>
+        <p class="font-semibold text-lg">
+          {{ node.label }} {{ node.id }}
+        </p>
+        <p class="opacity-70">
+          {{ node.mostListenedSong.master_metadata_track_name }} - {{ node.mostListenedSong.master_metadata_album_artist_name }}
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <div>
+          <p class="opacity-70">
+            Most Listened Album
+          </p>
+          <p class="truncate">
+            {{ node.mostListenedAlbum?.master_metadata_album_album_name }}
+          </p>
+        </div>
+
+        <div>
+          <p class="opacity-70">
+            Minutes Listened
+          </p>
+          <p>
+            {{ Math.round(node.totalMs / 1000 / 60) }}
+          </p>
+        </div>
+      </div>
     </div>
   </component>
 </template>

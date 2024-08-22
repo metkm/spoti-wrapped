@@ -55,7 +55,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 <template>
   <div class="overflow-x-hidden w-full">
     <DefineTemplate v-slot="{ $slots }">
-      <li class="h-96 w-[40rem] shrink-0 dark:bg-neutral-900 rounded list-none">
+      <li class="h-96 w-[40rem] shrink-0 bg-neutral-100 dark:bg-neutral-900 rounded list-none">
         <component :is="$slots.default" />
       </li>
     </DefineTemplate>
