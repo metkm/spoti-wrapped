@@ -18,6 +18,7 @@ const SIDE_ELEMENT_COUNT = 5
 const GAP = 16
 
 const isMounted = ref(false)
+const containerElement = ref<HTMLElement>()
 
 const windowSize = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -66,8 +67,33 @@ const offset = computed(() => {
   )
 })
 
+let startX = 0
+const handleTouchEvent = (direction: 'left' | 'right') => {
+  if (direction === 'left') {
+    const index = Math.max(0, (selectedIndex.value || 0) - 1)
+    modelValue.value = props.items.at(index)
+  } else {
+    const index = Math.min(props.items.length || 50, (selectedIndex.value || 0) + 1)
+    modelValue.value = props.items.at(index)
+  }
+}
+
 onMounted(() => {
   isMounted.value = true
+
+  containerElement.value?.addEventListener('touchstart', (event) => {
+    startX = event.touches[0]!.pageX
+  })
+
+  containerElement.value?.addEventListener('touchend', (event) => {
+    const touch = event.changedTouches.item(0)
+    if (!touch) return
+
+    const distance = touch.pageX - startX
+    if (Math.abs(distance) > 30) {
+      handleTouchEvent(distance > 0 ? 'left' : 'right')
+    }
+  })
 })
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
@@ -86,6 +112,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
     </DefineTemplate>
 
     <div
+      ref="containerElement"
       class="flex gap-4 transition-all duration-300"
       :style="{ transform: `translateX(${offset}px)` }"
     >
