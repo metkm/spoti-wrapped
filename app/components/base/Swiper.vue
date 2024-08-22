@@ -1,21 +1,44 @@
 <script setup lang="ts" generic="T extends { id: number | string }">
 import { breakpointsTailwind } from '@vueuse/core'
 
-const props = defineProps<{
-  items: T[]
-  fillSides?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    items: T[]
+    fillSides?: boolean
+    size?: 'sm' | 'md'
+  }>(),
+  {
+    size: 'md',
+  },
+)
 
 const modelValue = defineModel<T>()
 
-const WIDTH_DEFAULT = 340
-const WIDTH_LG = 640
+const SIDE_ELEMENT_COUNT = 5
+const GAP = 16
+
+const isMounted = ref(false)
 
 const windowSize = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const itemWidth = computed(() => {
-  return breakpoints.isGreater('lg') ? WIDTH_LG : WIDTH_DEFAULT
+const isScreenSmOrEqual = breakpoints.smallerOrEqual('sm')
+
+const itemSize = computed(() => {
+  const isSm = props.size === 'sm' || isScreenSmOrEqual.value
+  console.log(isSm)
+
+  if (isSm) {
+    return {
+      width: 320,
+      height: 384,
+    }
+  }
+
+  return {
+    width: 640,
+    height: 384,
+  }
 })
 
 const selectedIndex = computed(() => {
@@ -26,22 +49,20 @@ const selectedIndex = computed(() => {
   return foundIndex === -1 ? 0 : foundIndex
 })
 
-const isMounted = ref(false)
-const SIDE_ELEMENT_COUNT = 5
-const GAP = 16
-
 const offset = computed(() => {
   if (!isMounted.value) {
     return 0
   }
 
   const center = windowSize.width.value / 2
+  const fillSidesOffset = props.fillSides ? (SIDE_ELEMENT_COUNT * itemSize.value.width + (SIDE_ELEMENT_COUNT * GAP)) : 0
+
   return (
     center
-    - itemWidth.value / 2
-    - selectedIndex.value * itemWidth.value
+    - itemSize.value.width / 2
+    - selectedIndex.value * itemSize.value.width
     - selectedIndex.value * 16
-    - (props.fillSides ? (SIDE_ELEMENT_COUNT * itemWidth.value + (SIDE_ELEMENT_COUNT * GAP)) : 0)
+    - fillSidesOffset
   )
 })
 
@@ -55,7 +76,11 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 <template>
   <div class="overflow-x-hidden w-full">
     <DefineTemplate v-slot="{ $slots }">
-      <li class="h-96 w-[40rem] shrink-0 bg-neutral-100 dark:bg-neutral-900 rounded list-none">
+      <li
+        class="shrink-0 bg-neutral-100 dark:bg-neutral-900 rounded list-none w-80"
+        :style="{ width: `${itemSize.width}px`, height: `${itemSize.height}px` }"
+      >
+        <!-- :class="`${size === 'sm' ? 'h-80 w-96' : 'h-96 w-[40rem] '}`" -->
         <component :is="$slots.default" />
       </li>
     </DefineTemplate>
@@ -75,7 +100,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
         <ReuseTemplate
           v-for="item in items"
           :key="item.id"
-          :class="{ width: `${itemWidth}px` }"
+          :class="{ width: `${itemSize.width}px` }"
         >
           <button
             class="w-full h-full"

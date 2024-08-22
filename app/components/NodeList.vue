@@ -34,6 +34,7 @@ await useSpotifyFetch<ResponseTracks | undefined>('/tracks', {
       v-model="selectedNode"
       :items="nodeList"
       fill-sides
+      size="sm"
     >
       <Node
         :node="item"
