@@ -1,6 +1,10 @@
 import type { Owner } from './playlist'
 import type { Album, Artist, ExternalIds, ExternalUrls } from './spotify'
 
+export interface ResponseTracks {
+  tracks: Track[]
+}
+
 export interface TrackItem {
   added_at: string
   added_by: Owner

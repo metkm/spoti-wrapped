@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T">
-import { breakpointsTailwind } from '@vueuse/core'
 import type { Pagination } from '~/models/pagination'
 import type { Playlist } from '~/models/playlist'
 import type { Parsed } from '~/models/parsed'
@@ -13,30 +12,15 @@ const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>('/
   lazy: true,
 })
 
-const { width } = useWindowSize()
 const { bgImage, updateColorsFromImageElement } = useTheme()
-const breakpoints = useBreakpoints(breakpointsTailwind)
-
-const isLarge = breakpoints.greater('lg')
 
 const container = ref<HTMLElement>()
 const selectedPlaylist = ref<Playlist>()
 const selectedIndex = computed(() => data.value?.items.findIndex(item => item.id === selectedPlaylist.value?.id))
 
-const offset = computed(() => {
-  const half = width.value / 2
-  const playlistSize = isLarge.value ? 640 : 320
-  const playlistSizeSelected = isLarge.value ? 384 : 320
-
-  const currentIndex = selectedIndex.value || 0
-
-  return half - (playlistSize / 2) - (currentIndex * playlistSizeSelected) - (currentIndex * 16)
+watch(selectedPlaylist, () => {
+  bgImage.value = selectedPlaylist.value?.images?.at(0)?.url
 })
-
-const selectPlaylist = async (playlist: Playlist) => {
-  bgImage.value = playlist.images?.at(0)?.url
-  selectedPlaylist.value = playlist
-}
 
 const updateColor = (element: HTMLImageElement) => {
   updateColorsFromImageElement(element)
@@ -78,12 +62,11 @@ watchOnce(data, () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex items-center gap-4 max-w-7xl p-2 mx-auto w-full">
-      <h1 class="text-xl font-semibold">
-        My Playlists
-      </h1>
-
+  <BaseSection
+    title="My Playlists"
+    remove-max-limit
+  >
+    <template #top>
       <UButton
         leading-icon="i-heroicons-arrow-path-16-solid"
         :loading="status === 'pending'"
@@ -93,7 +76,7 @@ watchOnce(data, () => {
       >
         Refresh Playlists
       </UButton>
-    </div>
+    </template>
 
     <div class="relative">
       <div class="absolute inset-0 inset-y-28 blur-[200px] bg-transition">
@@ -105,30 +88,21 @@ watchOnce(data, () => {
         />
       </div>
 
-      <div class="relative overflox-x-hidden w-screen">
-        <ol
-          v-if="data"
-          ref="container"
-          class="flex gap-4 w-screen transition-transform duration-300"
-          :style="{ transform: `translateX(${offset}px)` }"
-        >
-          <li
-            v-for="playlist in data.items"
-            :key="playlist.id"
-            class="shrink-0"
-          >
-            <Playlist
-              :playlist="playlist"
-              :counts="counts"
-              :selected="playlist.id === selectedPlaylist?.id"
-              @click="selectPlaylist(playlist)"
-              @update-color="updateColor"
-            />
-          </li>
-        </ol>
-      </div>
+      <BaseSwiper
+        v-if="data"
+        v-slot="{ item }"
+        v-model="selectedPlaylist"
+        :items="data.items"
+      >
+        <Playlist
+          :playlist="item"
+          :counts="counts"
+          :selected="item.id === selectedPlaylist?.id"
+          @update-color="updateColor"
+        />
+      </BaseSwiper>
     </div>
-  </div>
+  </BaseSection>
 </template>
 
 <style>

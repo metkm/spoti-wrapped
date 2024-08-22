@@ -21,4 +21,5 @@ export default defineNuxtConfig({
       SPOTIFY_BASE_URI: '',
     },
   },
+  compatibilityDate: '2024-08-21',
 })

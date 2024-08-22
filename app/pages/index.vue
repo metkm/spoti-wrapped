@@ -9,10 +9,17 @@ const loading = ref(false)
 const ready = ref(false)
 const data = ref<Parsed>()
 
-const worker = new Worker(
-  new URL('~/core/parser.ts', import.meta.url),
-  { type: 'module' },
-)
+let worker: Worker | undefined
+onMounted(() => {
+  worker = new Worker(
+    new URL('~/core/parser.ts', import.meta.url),
+    { type: 'module' },
+  )
+
+  worker.addEventListener('message', (event: MessageEvent<Parsed>) => {
+    data.value = event.data
+  })
+})
 
 onChange((files) => {
   loading.value = true
@@ -29,11 +36,7 @@ onChange((files) => {
     fileList.push(file)
   }
 
-  worker.postMessage({ fileList })
-})
-
-worker.addEventListener('message', (event: MessageEvent<Parsed>) => {
-  data.value = event.data
+  worker?.postMessage({ fileList })
 })
 
 const redirectToAuth = async () => {
@@ -56,7 +59,7 @@ const parseExample = async () => {
 
   const file = new File([blob], 'example')
 
-  worker.postMessage({ fileList: [file] })
+  worker?.postMessage({ fileList: [file] })
   loading.value = false
 }
 
@@ -131,7 +134,7 @@ watch(data, () => {
         :counts="data.counts"
         :history-by-track-id="data.historyByTrackId"
       />
-      <History :nodes="data.history" />
+      <History :node-list="data.history" />
       <Reasons :reasons="data.reasons" />
       <Other :counts="data.counts" />
       <MostListened
