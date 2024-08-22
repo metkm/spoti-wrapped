@@ -110,7 +110,6 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
         class="shrink-0 bg-neutral-100 dark:bg-neutral-900 rounded list-none w-80"
         :style="{ width: `${itemSize.width}px`, height: `${itemSize.height}px` }"
       >
-        <!-- :class="`${size === 'sm' ? 'h-80 w-96' : 'h-96 w-[40rem] '}`" -->
         <component :is="$slots.default" />
       </li>
     </DefineTemplate>
