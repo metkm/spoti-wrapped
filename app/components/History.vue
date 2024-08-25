@@ -4,13 +4,6 @@ import type { Node } from '~/models/node'
 defineProps<{
   nodeList: Node[]
 }>()
-
-const selectedYear = ref<Node>()
-const selectedMonth = ref<Node>()
-
-watch(selectedYear, () => {
-  selectedMonth.value = undefined
-})
 </script>
 
 <template>
