@@ -16,8 +16,6 @@ const trackItems = ref<TrackItem[]>([])
 const page = ref(1)
 const offset = ref(0)
 
-const { data: cache } = useNuxtData<Pagination<TrackItem>>(`playlist:${props.id}`)
-
 const {
   data: trackList,
   status,
@@ -25,13 +23,7 @@ const {
 } = await useSpotifyFetch<Pagination<TrackItem>>(`https://api.spotify.com/v1/playlists/${props.id}/tracks`, {
   key: `playlist:${props.id}`,
   params: {
-    offset: offset.value,
-  },
-  getCachedData: () => {
-    if (!cache.value) return
-    trackItems.value.push(...cache.value.items)
-
-    return cache.value
+    offset: offset,
   },
   transform: (response: Pagination<TrackItem>) => {
     if (response) {
@@ -99,49 +91,53 @@ const items = computed(() =>
     >
       <TransitionGroup name="list">
         <li
-          v-for="{ track } in items"
+          v-for="({ track }, index) in items"
           :key="track.id"
-          class="flex items-center gap-2 p-2"
+          class="flex items-center gap-2"
         >
-          <img
-            :src="track.album.images.at(0)?.url"
-            class="size-14 rounded"
-          >
+          <p>{{ index + 1 }}</p>
 
-          <div class="text-left">
-            <p>
-              {{ track.name }}
-            </p>
-
-            <ul
-              class="flex items-center flex-wrap gap-6 gap-y-0 text-xs text-neutral-400 list-disc"
+          <div class="flex items-center gap-2 p-2">
+            <img
+              :src="track.album.images.at(0)?.url"
+              class="size-14 rounded"
             >
-              <li v-if="counts.skip[track.id] && counts.skip[track.id]! > 0">
-                <p>Skip count {{ counts.skip[track.id] }}</p>
-              </li>
 
-              <li
-                v-if="counts.listen[track.id] && counts.listen[track.id]! > 0"
-              >
-                <p>Listen count {{ counts.listen[track.id] }}</p>
-              </li>
+            <div class="text-left">
+              <p>
+                {{ track.name }}
+              </p>
 
-              <li
-                v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 0"
+              <ul
+                class="flex items-center flex-wrap gap-6 gap-y-0 text-xs text-neutral-400 list-disc"
               >
-                <p>
-                  Average of
-                  {{
-                    Math.round(
-                      counts.totalMsPlayed[track.id]!
-                        / 1000
-                        / counts.listen[track.id]!,
-                    )
-                  }}
-                  seconds listened
-                </p>
-              </li>
-            </ul>
+                <li v-if="counts.skip[track.id] && counts.skip[track.id]! > 0">
+                  <p>Skip count {{ counts.skip[track.id] }}</p>
+                </li>
+
+                <li
+                  v-if="counts.listen[track.id] && counts.listen[track.id]! > 0"
+                >
+                  <p>Listen count {{ counts.listen[track.id] }}</p>
+                </li>
+
+                <li
+                  v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 0"
+                >
+                  <p>
+                    Average of
+                    {{
+                      Math.round(
+                        counts.totalMsPlayed[track.id]!
+                          / 1000
+                          / counts.listen[track.id]!,
+                      )
+                    }}
+                    seconds listened
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
         </li>
       </TransitionGroup>
