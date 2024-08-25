@@ -27,7 +27,6 @@ const isScreenSmOrEqual = breakpoints.smallerOrEqual('sm')
 
 const itemSize = computed(() => {
   const isSm = props.size === 'sm' || isScreenSmOrEqual.value
-  console.log(isSm)
 
   if (isSm) {
     return {

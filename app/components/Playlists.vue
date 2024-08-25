@@ -79,14 +79,10 @@ watchOnce(data, () => {
     </template>
 
     <div class="relative">
-      <div class="absolute inset-0 inset-y-28 blur-[200px] bg-transition">
-        <div
-          class="h-full w-full bg-center bg-cover"
-          :style="{
-            backgroundImage: `url('${bgImage}')`,
-          }"
-        />
-      </div>
+      <BaseImageLight
+        v-if="bgImage"
+        :src="bgImage"
+      />
 
       <BaseSwiper
         v-if="data"
@@ -113,13 +109,5 @@ watchOnce(data, () => {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.bg-transition {
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  transition: background-image 10s ease-in-out;
 }
 </style>
