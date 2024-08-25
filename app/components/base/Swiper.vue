@@ -126,18 +126,22 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
       </template>
 
       <ol class="flex gap-4">
-        <ReuseTemplate
+        <div
           v-for="item in items"
           :key="item.id"
-          :class="{ width: `${itemSize.width}px` }"
         >
-          <button
-            class="w-full h-full"
-            @click="modelValue = item"
+          <li
+            class="shrink-0 bg-neutral-100 dark:bg-neutral-900 rounded list-none w-80"
+            :style="{ width: `${itemSize.width}px`, height: `${itemSize.height}px` }"
           >
-            <slot :item="item" />
-          </button>
-        </ReuseTemplate>
+            <button
+              class="w-full h-full"
+              @click="modelValue = item"
+            >
+              <slot :item="item" />
+            </button>
+          </li>
+        </div>
       </ol>
 
       <template v-if="fillSides">
