@@ -22,10 +22,6 @@ watch(selectedPlaylist, () => {
   bgImage.value = selectedPlaylist.value?.images?.at(0)?.url
 })
 
-const updateColor = (element: HTMLImageElement) => {
-  updateColorsFromImageElement(element)
-}
-
 let startX = 0
 const handleTouchEvent = (direction: 'left' | 'right') => {
   if (direction === 'left') {
@@ -59,6 +55,24 @@ watchOnce(data, () => {
   if (selectedPlaylist.value) return
   selectedPlaylist.value = data.value?.items.at(0)
 })
+
+watch(
+  () => selectedPlaylist.value,
+  () => {
+    const image = selectedPlaylist.value?.images?.at(0)
+    if (!image) return
+
+    const img = new Image(image.width, image.height)
+    img.src = image.url
+    img.crossOrigin = 'anonymous'
+
+    img.addEventListener('load', () => {
+      updateColorsFromImageElement(img)
+    }, {
+      once: true,
+    })
+  },
+)
 </script>
 
 <template>
@@ -94,7 +108,6 @@ watchOnce(data, () => {
           :playlist="item"
           :counts="counts"
           :selected="item.id === selectedPlaylist?.id"
-          @update-color="updateColor"
         />
       </BaseSwiper>
     </div>

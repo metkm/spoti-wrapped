@@ -2,38 +2,11 @@
 import type { Parsed } from '~/models/parsed'
 import type { Playlist } from '~/models/playlist'
 
-const props = defineProps<{
+defineProps<{
   playlist: Playlist
   selected?: boolean
   counts: Parsed['counts']
 }>()
-
-const emit = defineEmits<{
-  updateColor: [element: HTMLImageElement]
-}>()
-
-const element = ref<HTMLImageElement>()
-
-const updateColor = () => {
-  if (!element.value) return
-
-  emit('updateColor', element.value)
-}
-
-whenever(
-  () => props.selected,
-  () => {
-    if (!element.value?.complete) {
-      element.value?.addEventListener('load', updateColor, {
-        once: true,
-      })
-
-      return
-    }
-
-    updateColor()
-  },
-)
 </script>
 
 <template>
@@ -41,7 +14,6 @@ whenever(
     class="flex relative shrink-0 w-full h-full rounded-lg shadow-md shadow-black/30 overflow-hidden transition-all first:snap-center"
   >
     <img
-      ref="element"
       :src="playlist.images?.at(0)?.url"
       class="absolute inset-0 w-full h-full object-cover"
       crossorigin="anonymous"
@@ -59,12 +31,13 @@ whenever(
         </p>
       </div>
 
-      <BaseError v-if="selected">
+      <BaseError>
         <Transition
           name="fade"
           appear
         >
           <PlaylistTracks
+            v-if="selected"
             :id="playlist.id"
             :counts
             class="backdrop-blur-[200px]"
