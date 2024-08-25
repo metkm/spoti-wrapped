@@ -16,6 +16,8 @@ const trackItems = ref<TrackItem[]>([])
 const page = ref(1)
 const offset = ref(0)
 
+const { data: cache } = useNuxtData<Pagination<TrackItem>>(`playlist:${props.id}`)
+
 const {
   data: trackList,
   status,
@@ -24,6 +26,12 @@ const {
   key: `playlist:${props.id}`,
   params: {
     offset: offset.value,
+  },
+  getCachedData: () => {
+    if (!cache.value) return
+    trackItems.value.push(...cache.value.items)
+
+    return cache.value
   },
   transform: (response: Pagination<TrackItem>) => {
     if (response) {
