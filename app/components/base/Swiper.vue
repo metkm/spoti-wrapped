@@ -49,6 +49,7 @@ const itemPositions = computed(() => {
 
 const { distanceX, isSwiping } = usePointerSwipe(container, {
   disableTextSelect: true,
+  threshold: 0,
   onSwipe: () => {
     if (!containerInner.value) return
 

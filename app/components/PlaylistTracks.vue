@@ -60,6 +60,24 @@ useInfiniteScroll(
   },
 )
 
+let scrollTopOffset = 0
+const { direction, posStart, posEnd } = usePointerSwipe(container, {
+  threshold: 2,
+  onSwipe: (event) => {
+    const diff = posStart.y - posEnd.y
+
+    if (direction.value === 'up' || direction.value === 'down') {
+      container.value?.scrollTo({ top: diff + scrollTopOffset })
+      event.stopPropagation()
+    }
+  },
+  onSwipeEnd: () => {
+    if (container.value) {
+      scrollTopOffset = container.value.scrollTop
+    }
+  },
+})
+
 const items = computed(() =>
   trackItems.value?.filter(item =>
     item.track.name.toLowerCase().includes(queryDebounced.value.toLowerCase()),
@@ -87,60 +105,58 @@ const items = computed(() =>
     <ul
       v-if="items.length > 0"
       ref="container"
-      class="h-full overflow-y-auto overflow-fade relative"
+      class="h-full overflow-y-auto overflow-x-hidden overflow-fade relative"
     >
-      <TransitionGroup name="list">
-        <li
-          v-for="({ track }, index) in items"
-          :key="track.id"
-          class="flex items-center gap-2"
-        >
-          <p>{{ index + 1 }}</p>
+      <li
+        v-for="({ track }, index) in items"
+        :key="track.id"
+        class="flex items-center gap-2"
+      >
+        <p>{{ index + 1 }}</p>
 
-          <div class="flex items-center gap-2 p-2">
-            <img
-              :src="track.album.images.at(0)?.url"
-              class="size-14 rounded"
+        <div class="flex items-center gap-2 p-2">
+          <img
+            :src="track.album.images.at(0)?.url"
+            class="size-14 rounded"
+          >
+
+          <div class="text-left">
+            <p>
+              {{ track.name }}
+            </p>
+
+            <ul
+              class="flex items-center flex-wrap gap-6 gap-y-0 text-xs text-neutral-400 list-disc"
             >
+              <li v-if="counts.skip[track.id] && counts.skip[track.id]! > 0">
+                <p>Skip count {{ counts.skip[track.id] }}</p>
+              </li>
 
-            <div class="text-left">
-              <p>
-                {{ track.name }}
-              </p>
-
-              <ul
-                class="flex items-center flex-wrap gap-6 gap-y-0 text-xs text-neutral-400 list-disc"
+              <li
+                v-if="counts.listen[track.id] && counts.listen[track.id]! > 0"
               >
-                <li v-if="counts.skip[track.id] && counts.skip[track.id]! > 0">
-                  <p>Skip count {{ counts.skip[track.id] }}</p>
-                </li>
+                <p>Listen count {{ counts.listen[track.id] }}</p>
+              </li>
 
-                <li
-                  v-if="counts.listen[track.id] && counts.listen[track.id]! > 0"
-                >
-                  <p>Listen count {{ counts.listen[track.id] }}</p>
-                </li>
-
-                <li
-                  v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 0"
-                >
-                  <p>
-                    Average of
-                    {{
-                      Math.round(
-                        counts.totalMsPlayed[track.id]!
-                          / 1000
-                          / counts.listen[track.id]!,
-                      )
-                    }}
-                    seconds listened
-                  </p>
-                </li>
-              </ul>
-            </div>
+              <li
+                v-if="counts.totalMsPlayed[track.id] && counts.totalMsPlayed[track.id]! > 0"
+              >
+                <p>
+                  Average of
+                  {{
+                    Math.round(
+                      counts.totalMsPlayed[track.id]!
+                        / 1000
+                        / counts.listen[track.id]!,
+                    )
+                  }}
+                  seconds listened
+                </p>
+              </li>
+            </ul>
           </div>
-        </li>
-      </TransitionGroup>
+        </div>
+      </li>
 
       <div
         v-if="status === 'pending'"
