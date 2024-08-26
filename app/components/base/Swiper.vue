@@ -47,6 +47,16 @@ const itemPositions = computed(() => {
   return itemPositions
 })
 
+const handleSwipeEnd = () => {
+  const snapPosition = closest(itemPositions.value, left.value)
+  if (!snapPosition) return
+
+  startOffset = snapPosition.x
+  left.value = snapPosition.x
+
+  modelValue.value = props.items.at(snapPosition.index)
+}
+
 const { distanceX, isSwiping } = usePointerSwipe(container, {
   disableTextSelect: true,
   threshold: 0,
@@ -66,13 +76,7 @@ const { distanceX, isSwiping } = usePointerSwipe(container, {
     )
   },
   onSwipeEnd: () => {
-    const snapPosition = closest(itemPositions.value, left.value)
-    if (!snapPosition) return
-
-    startOffset = snapPosition.x
-    left.value = snapPosition.x
-
-    modelValue.value = props.items.at(snapPosition.index)
+    handleSwipeEnd()
   },
 })
 
@@ -80,7 +84,6 @@ const isScreenSmOrEqual = breakpoints.smallerOrEqual('sm')
 
 const itemSize = computed(() => {
   const isSm = props.size === 'sm' || isScreenSmOrEqual.value
-
   if (isSm) {
     return {
       width: 320,
@@ -92,6 +95,10 @@ const itemSize = computed(() => {
     width: 640,
     height: 384,
   }
+})
+
+onMounted(() => {
+  handleSwipeEnd()
 })
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
