@@ -11,81 +11,82 @@ const props = defineProps<{
 const query = ref('')
 const queryDebounced = refDebounced(query, 1000)
 
-const container = ref<HTMLElement>()
-const trackItems = ref<TrackItem[]>([])
-const page = ref(1)
-const offset = ref(0)
+// const container = ref<HTMLElement>()
+// const trackItems = ref<TrackItem[]>([])
+// const page = ref(1)
+// const offset = ref(0)
 
-const {
-  data: trackList,
-  status,
-  refresh,
-} = await useSpotifyFetch<Pagination<TrackItem>>(`https://api.spotify.com/v1/playlists/${props.id}/tracks`, {
-  key: `playlist:${props.id}`,
-  params: {
-    offset: offset,
-  },
-  transform: (response: Pagination<TrackItem>) => {
-    if (response) {
-      for (let index = 0; index < response.items.length; index++) {
-        const element = response.items[index]
-        if (!element) continue
+// const {
+//   data: trackList,
+//   status,
+//   refresh,
+// } = await useSpotifyFetch<Pagination<TrackItem>>(`https://api.spotify.com/v1/playlists/${props.id}/tracks`, {
+//   key: `playlist:${props.id}`,
+//   params: {
+//     offset: offset,
+//   },
+//   transform: (response: Pagination<TrackItem>) => {
+//     if (response) {
+//       for (let index = 0; index < response.items.length; index++) {
+//         const element = response.items[index]
+//         if (!element) continue
 
-        const isFound = trackItems.value.some((trackItem) => {
-          return trackItem.track.id === element.track.id
-        })
+//         const isFound = trackItems.value.some((trackItem) => {
+//           return trackItem.track.id === element.track.id
+//         })
 
-        if (isFound) continue
+//         if (isFound) continue
 
-        trackItems.value.push(element)
-      }
-    }
+//         trackItems.value.push(element)
+//       }
+//     }
 
-    return response
-  },
-  watch: [page],
-})
+//     return response
+//   },
+//   watch: [page],
+// })
 
-useInfiniteScroll(
-  container,
-  () => {
-    if (status.value === 'pending' || !trackList.value?.next) return
+// useInfiniteScroll(
+//   container,
+//   () => {
+//     if (status.value === 'pending' || !trackList.value?.next) return
 
-    offset.value += 20 * page.value
-    page.value++
-  },
-  {
-    distance: 20,
-    canLoadMore: () => !!trackList.value?.next,
-  },
-)
+//     offset.value += 20 * page.value
+//     page.value++
+//   },
+//   {
+//     distance: 20,
+//     canLoadMore: () => !!trackList.value?.next,
+//   },
+// )
 
-const items = computed(() =>
-  trackItems.value?.filter(item =>
-    item.track.name.toLowerCase().includes(queryDebounced.value.toLowerCase()),
-  ),
-)
+// const items = computed(() => {
+//   console.log(trackItems.value)
+//   return trackItems.value?.filter(item =>
+//     item.track.name.toLowerCase().includes(queryDebounced.value.toLowerCase()),
+//   )
+// })
 </script>
 
 <template>
   <div class="flex flex-col gap-2 overflow-hidden h-full p-2 rounded-lg">
     <div class="flex items-center gap-2 z-10">
-      <UButton
+      <!-- <UButton
         leading-icon="i-heroicons-arrow-path-16-solid"
         :loading="status === 'pending'"
         square
         variant="ghost"
         @click="refresh"
-      />
+      /> -->
       <UInput
         v-model="query"
         placeholder="Search"
         variant="soft"
+        class="grow"
       />
     </div>
 
-    <ul
-      v-if="items.length > 0"
+    <!-- <ul
       ref="container"
       class="h-full overflow-y-auto overflow-fade relative"
     >
@@ -151,6 +152,6 @@ const items = computed(() =>
           class="animate-spin text-lg"
         />
       </div>
-    </ul>
+    </ul> -->
   </div>
 </template>

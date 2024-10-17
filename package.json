@@ -17,7 +17,8 @@
     "nuxt": "^3.13.2",
     "radix-vue": "^1.9.7",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-carousel": "^0.3.4"
   },
   "devDependencies": {
     "@iconify-json/heroicons": "^1.2.1",
