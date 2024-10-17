@@ -80,7 +80,7 @@ const items = computed(() =>
       <UInput
         v-model="query"
         placeholder="Search"
-        variant="none"
+        variant="soft"
       />
     </div>
 

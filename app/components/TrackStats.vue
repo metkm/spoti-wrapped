@@ -91,6 +91,7 @@ const exportCsv = () => {
             placeholder="Order By"
             :options="options"
             class="w-48"
+            variant="soft"
           />
         </UFormField>
 
@@ -106,6 +107,7 @@ const exportCsv = () => {
           placeholder="Search"
           :loading="status === 'pending'"
           icon="i-heroicons-magnifying-glass-solid"
+          variant="soft"
         />
 
         <UButton @click="exportCsv">

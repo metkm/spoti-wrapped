@@ -42,6 +42,7 @@ const mostListened = computed(() => {
             :options="options"
             placeholder="Order By"
             class="w-48"
+            variant="soft"
           />
         </UFormField>
 
@@ -49,6 +50,7 @@ const mostListened = computed(() => {
           v-model="query"
           icon="i-heroicons-magnifying-glass-solid"
           placeholder="Search"
+          variant="soft"
         />
       </div>
     </template>
