@@ -15,7 +15,7 @@ const props = withDefaults(
 
 const modelValue = defineModel<T>()
 
-const carousel = ref(null)
+const carousel = ref<{ slideTo: (index: number) => void } | null>(null)
 
 const handleClick = (item: T) => {
   modelValue.value = item
@@ -31,8 +31,7 @@ const handleClick = (item: T) => {
 <template>
   <Carousel
     ref="carousel"
-    wrap-around
-    :items-to-show="1.2"
+    :items-to-show="1.1"
     :breakpoints="{
       1024: {
         itemsToShow: 2.2,
@@ -48,7 +47,7 @@ const handleClick = (item: T) => {
       class="h-96"
     >
       <button
-        class="mx-4 w-full h-full"
+        class="mx-1 lg:mx-4 w-full h-full"
         @click="handleClick(item)"
       >
         <slot :item="item" />
