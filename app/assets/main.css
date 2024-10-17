@@ -2,24 +2,31 @@
 
 html {
   font-family: "Inter", sans-serif;
-  @apply font-medium;
+  font-weight: 500;
 }
 
-html, body, #nuxt {
-  @apply min-h-screen;
-  @apply w-screen overflow-x-hidden;
+body {
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar {
-  @apply w-2 h-2;
+  width: 0.6rem;
+  height: 0.6rem;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent rounded-full;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-neutral-200 dark:bg-[rgb(var(--color-primary-400))] rounded-full;
+  background-color: var(--color-neutral-200);
+  border-radius: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--ui-color-primary-400);
+  }
 }
 
 .fade-enter-active,

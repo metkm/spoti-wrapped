@@ -102,7 +102,7 @@ watch(data, () => {
             leading-icon="i-heroicons-arrow-up-tray-20-solid"
             :loading
             block
-            @click="open"
+            @click="() => open()"
           >
             Process
           </UButton>

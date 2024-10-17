@@ -7,14 +7,13 @@ import {
   type Theme,
 } from '@material/material-color-utilities'
 import ColorThief from 'colorthief'
-import { _primary } from '#tailwind-config/theme/colors'
 
 const updateCssVariable = (tone: number, level: number) => {
   const rgba = rgbaFromArgb(tone)
-  const rgbaString = `${rgba.r} ${rgba.g} ${rgba.b}`
+  const rgbaString = `rgb(${rgba.r} ${rgba.g} ${rgba.b})`
 
   document.documentElement.style.setProperty(
-    `--color-primary-${level}`,
+    `--ui-color-primary-${level}`,
     rgbaString,
   )
 }

@@ -85,14 +85,14 @@ const exportCsv = () => {
   >
     <template #top>
       <div class="flex flex-wrap items-end gap-2">
-        <UFormGroup label="Order by">
+        <UFormField label="Order by">
           <USelectMenu
             v-model="orderBy"
             placeholder="Order By"
             :options="options"
             class="w-48"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UButton
           v-if="orderBy"
