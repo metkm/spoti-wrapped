@@ -30,7 +30,7 @@ const itemSize = computed(() => {
 
   if (isSm) {
     return {
-      width: 320,
+      width: 384,
       height: 288,
     }
   }
