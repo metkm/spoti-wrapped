@@ -15,6 +15,7 @@ onMounted(() => {
   worker = new Worker(new URL('~/core/parser.ts', import.meta.url), { type: 'module' })
 
   worker?.addEventListener('message', async (event: MessageEvent<Parsed>) => {
+    // Now that I'm done coding this, I'm not sure why we need this at all lol
     if (data.value) {
       const { mergician } = await import('mergician')
       const customMergician = mergician({
