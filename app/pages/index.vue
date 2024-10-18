@@ -9,15 +9,69 @@ const loading = ref(false)
 const ready = ref(false)
 const data = ref<Parsed>()
 
-let worker: Worker | undefined
+let worker: Worker
 onMounted(() => {
-  worker = new Worker(
-    new URL('~/core/parser.ts', import.meta.url),
-    { type: 'module' },
-  )
+  worker = new Worker(new URL('~/core/parser.ts', import.meta.url), { type: 'module' })
 
-  worker.addEventListener('message', (event: MessageEvent<Parsed>) => {
-    data.value = event.data
+  worker?.addEventListener('message', async (event: MessageEvent<Parsed>) => {
+    if (data.value) {
+      const { mergician } = await import('mergician')
+      const customMergician = mergician({
+        afterEach: ({ mergeVal, targetObj, key }) => {
+          // @ts-expect-error: Don't care
+          if (!targetObj[key]) return
+
+          if (typeof mergeVal === 'number') {
+            // @ts-expect-error: Don't care
+            return mergeVal + targetObj[key]
+          }
+        },
+        skipKeys: ['id'],
+      })
+
+      data.value = {
+        historyByTrackId: mergician(
+          data.value.historyByTrackId,
+          event.data.historyByTrackId,
+        ) as Parsed['historyByTrackId'],
+        counts: customMergician(data.value.counts, event.data.counts),
+        reasons: {
+          end: customMergician(data.value.reasons.end, event.data.reasons.end),
+          start: customMergician(data.value.reasons.start, event.data.reasons.start),
+        },
+        dates: mergician({
+          afterEach: ({ mergeVal, depth, targetObj, key }) => {
+            type D = { date: Date, history: History }
+            // @ts-expect-error: Don't care
+            const target = targetObj[key] as D
+
+            if (depth !== 0 || !target) return
+
+            const d = mergeVal as D
+            if (d.date < target.date) {
+              return target
+            }
+          },
+        })(data.value.dates, event.data.dates),
+        history: data.value.history
+          .map((his) => {
+            const target = event.data.history.find(h => h.id === his.id)
+            if (!target) return his
+
+            return {
+              id: his.id,
+              ...customMergician(his, target),
+            }
+          })
+          .concat(
+            event.data.history.filter(val => !data.value?.history.find(his => his.id === val.id)),
+          ),
+      }
+    } else {
+      data.value = event.data
+    }
+
+    console.log(data.value)
   })
 })
 
@@ -91,11 +145,10 @@ watch(data, () => {
       </a>
 
       <p>
-        First, you should go to the Spotify Privacy page. Request your Extended
-        Streaming History and wait for Spotify to send your data to your email.
-        If you have your data already downloaded, click the upload button and
-        select all the files that starts with endsong_NUMBER and ends with .json
-        in the folder you have downloaded.
+        First, you should go to the Spotify Privacy page. Request your Extended Streaming History
+        and wait for Spotify to send your data to your email. If you have your data already
+        downloaded, click the upload button and select all the files that starts with endsong_NUMBER
+        and ends with .json in the folder you have downloaded.
       </p>
 
       <div class="flex gap-2">
@@ -124,7 +177,7 @@ watch(data, () => {
             icon="i-heroicons-plus"
             @click="open"
           >
-            Add files
+            Add files (experimental)
           </UButton>
         </div>
 

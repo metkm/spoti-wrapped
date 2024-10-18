@@ -20,8 +20,6 @@ const ids = computed(() => {
       return masterTrackName?.includes(queryDebounced.value.toLowerCase())
     })
 
-    filtered = filtered.slice(0, 50)
-
     if (orderBy.value) {
       filtered.sort(([_, a], [__, b]) => {
         const aId = getSongId(a.history)
@@ -35,6 +33,7 @@ const ids = computed(() => {
       })
     }
 
+    filtered = filtered.slice(0, 50)
     return filtered.map(([id]) => id).join(',')
   }
 
