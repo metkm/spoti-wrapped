@@ -107,8 +107,6 @@ onMounted(() => {
     } else {
       data.value = event.data
     }
-
-    console.log(data.value)
   })
 })
 
