@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Parsed } from '~/models/parsed'
+import type { Node } from '~/models/node'
 
 const runtimeConfig = useRuntimeConfig()
 const { tokens } = useTokens()
@@ -29,7 +30,7 @@ onMounted(() => {
         skipKeys: ['id'],
       })
 
-      data.value = {
+      const newData = {
         historyByTrackId: mergician(
           data.value.historyByTrackId,
           event.data.historyByTrackId,
@@ -58,15 +59,51 @@ onMounted(() => {
             const target = event.data.history.find(h => h.id === his.id)
             if (!target) return his
 
-            return {
+            // if (data.value?.counts.listen[getSongId(his.mostListenedSong.spotify_track_uri)!] > target)
+
+            const result = {
               id: his.id,
               ...customMergician(his, target),
+            } as Node
+
+            const entriesTracks = Object.entries(result.songListenCounts)
+            let currMaxSong: [string, number] | undefined = entriesTracks.at(0)
+
+            for (let index = 0; index < entriesTracks.length; index++) {
+              const count = entriesTracks[index]
+              if (count && currMaxSong && currMaxSong[1] < count[1]) {
+                currMaxSong = count
+              }
             }
+
+            const entriesAlbums = Object.entries(result.albumListenCounts)
+            let currMaxAlbum: [string, number] | undefined = entriesAlbums.at(0)
+
+            for (let index = 0; index < entriesAlbums.length; index++) {
+              const count = entriesAlbums[index]
+              if (count && currMaxAlbum && currMaxAlbum[1] < count[1]) {
+                currMaxAlbum = count
+              }
+            }
+
+            const track = event.data.historyByTrackId[currMaxSong![0]]
+            if (track) {
+              result.mostListenedSong = track
+            }
+
+            const album = event.data.historyByTrackId[currMaxSong![0]]
+            if (album) {
+              result.mostListenedAlbum = album
+            }
+
+            return result
           })
           .concat(
             event.data.history.filter(val => !data.value?.history.find(his => his.id === val.id)),
           ),
       }
+
+      data.value = newData
     } else {
       data.value = event.data
     }
