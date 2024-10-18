@@ -21,12 +21,17 @@ onMounted(() => {
   })
 })
 
-onChange((files) => {
-  loading.value = true
+const processFiles = () => {
   ready.value = false
   data.value = undefined
 
+  open()
+}
+
+onChange((files) => {
   if (!files) return
+
+  loading.value = true
 
   const fileList = []
   for (let index = 0; index < files.length; index++) {
@@ -96,13 +101,13 @@ watch(data, () => {
       <div class="flex gap-2">
         <div
           v-if="tokens"
-          class="w-full grid grid-cols-2 gap-2"
+          class="w-full grid grid-cols-3 gap-2"
         >
           <UButton
             leading-icon="i-heroicons-arrow-up-tray-20-solid"
             :loading
             block
-            @click="open"
+            @click="processFiles"
           >
             Process
           </UButton>
@@ -113,6 +118,13 @@ watch(data, () => {
             @click="parseExample"
           >
             Show example
+          </UButton>
+          <UButton
+            block
+            icon="i-heroicons-plus"
+            @click="open"
+          >
+            Add files
           </UButton>
         </div>
 
