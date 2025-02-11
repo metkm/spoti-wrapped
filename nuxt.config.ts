@@ -1,16 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
   modules: ['@nuxt/ui', '@nuxt/eslint', '@vueuse/nuxt'],
+  devtools: { enabled: true },
   css: ['~/assets/main.css'],
-  future: {
-    compatibilityVersion: 4,
-  },
-  eslint: {
-    config: {
-      stylistic: {
-        braceStyle: '1tbs',
-      },
+  ui: {
+    theme: {
+      colors: ['primary'],
     },
   },
   runtimeConfig: {
@@ -21,5 +16,15 @@ export default defineNuxtConfig({
       SPOTIFY_BASE_URI: '',
     },
   },
+  future: {
+    compatibilityVersion: 4,
+  },
   compatibilityDate: '2024-08-21',
+  eslint: {
+    config: {
+      stylistic: {
+        braceStyle: '1tbs',
+      },
+    },
+  },
 })

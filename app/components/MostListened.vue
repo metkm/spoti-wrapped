@@ -36,14 +36,14 @@ const mostListened = computed(() => {
   <BaseSection>
     <template #top>
       <div class="flex items-end gap-4">
-        <UFormGroup label="Order by">
+        <UFormField label="Order by">
           <USelectMenu
             v-model="orderBy"
-            :options="options"
+            :items="options"
             placeholder="Order By"
             class="w-48"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UInput
           v-model="query"
