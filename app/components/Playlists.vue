@@ -1,78 +1,51 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
 import type { Pagination } from '~/models/pagination'
-import type { Playlist } from '~/models/playlist'
 import type { Parsed } from '~/models/parsed'
+import type { Playlist } from '~/models/playlist'
 
 defineProps<{
   counts: Parsed['counts']
 }>()
+
+const carousel = useTemplateRef('carousel')
+const { bgImage, updateColorsFromImageElement } = useTheme()
+
+const selectedPlaylistIndex = ref()
 
 const { data, status, refresh } = await useSpotifyFetch<Pagination<Playlist>>('/me/playlists', {
   key: 'playlists',
   lazy: true,
 })
 
-const { bgImage, updateColorsFromImageElement } = useTheme()
-
-const container = ref<HTMLElement>()
-const selectedPlaylist = ref<Playlist>()
-const selectedIndex = computed(() => data.value?.items.findIndex(item => item.id === selectedPlaylist.value?.id))
-
-watch(selectedPlaylist, () => {
-  bgImage.value = selectedPlaylist.value?.images?.at(0)?.url
-})
-
-let startX = 0
-const handleTouchEvent = (direction: 'left' | 'right') => {
-  if (direction === 'left') {
-    const index = Math.max(0, (selectedIndex.value || 0) - 1)
-    selectedPlaylist.value = data.value?.items.at(index)
-  } else {
-    const index = Math.min(data.value?.items.length || 50, (selectedIndex.value || 0) + 1)
-    selectedPlaylist.value = data.value?.items.at(index)
-  }
-}
-
 onMounted(() => {
-  container.value?.addEventListener('touchstart', (event) => {
-    startX = event.touches[0]!.pageX
-  })
+  console.log('mounted, carousel', carousel.value)
+  if (!carousel.value) return
 
-  container.value?.addEventListener('touchmove', (event) => {
-    event.preventDefault()
-  })
+  carousel.value.emblaApi?.on('select', () => {
+    const selectedIndex = carousel.value?.emblaApi?.selectedScrollSnap()
+    if (selectedIndex === undefined) return
 
-  container.value?.addEventListener('touchend', (event) => {
-    const touch = event.changedTouches.item(0)
-    if (!touch) return
+    selectedPlaylistIndex.value = selectedIndex
 
-    const distance = touch.pageX - startX
-    handleTouchEvent(distance > 0 ? 'left' : 'right')
-  })
-})
+    const playlist = data.value?.items.at(selectedIndex)
+    if (!playlist) return
 
-watchOnce(data, () => {
-  if (selectedPlaylist.value) return
-  selectedPlaylist.value = data.value?.items.at(0)
-})
+    const playlistImage = playlist.images?.at(0)
+    if (!playlistImage) return
 
-watch(
-  () => selectedPlaylist.value,
-  () => {
-    const image = selectedPlaylist.value?.images?.at(0)
-    if (!image) return
+    const image = new Image()
+    image.src = playlistImage.url
+    image.crossOrigin = 'anonymous'
 
-    const img = new Image(image.width, image.height)
-    img.src = image.url
-    img.crossOrigin = 'anonymous'
+    bgImage.value = playlistImage.url
 
-    img.addEventListener('load', () => {
-      updateColorsFromImageElement(img)
+    image.addEventListener('load', () => {
+      updateColorsFromImageElement(image)
     }, {
       once: true,
     })
-  },
-)
+  })
+})
 </script>
 
 <template>
@@ -85,8 +58,8 @@ watch(
         leading-icon="i-heroicons-arrow-path-16-solid"
         :loading="status === 'pending'"
         class="ml-auto"
-        variant="soft"
-        @click="refresh"
+        variant="ghost"
+        @click="() => refresh()"
       >
         Refresh Playlists
       </UButton>
@@ -98,29 +71,20 @@ watch(
         :src="bgImage"
       />
 
-      <BaseSwiper
-        v-if="data"
-        v-slot="{ item }"
-        v-model="selectedPlaylist"
-        :items="data.items"
+      <UCarousel
+        ref="carousel"
+        v-slot="{ item, index }"
+        :items="data?.items || []"
+        :ui="{ item: 'max-w-2xl' }"
+        :contain-scroll="false"
       >
         <Playlist
           :playlist="item"
           :counts="counts"
-          :selected="item.id === selectedPlaylist?.id"
+          :selected="selectedPlaylistIndex === index"
+          class="user-select"
         />
-      </BaseSwiper>
+      </UCarousel>
     </div>
   </BaseSection>
 </template>
-
-<style>
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-</style>

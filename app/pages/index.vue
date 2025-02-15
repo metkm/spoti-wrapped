@@ -211,7 +211,7 @@ watch(data, () => {
           <UButton
             block
             icon="i-heroicons-plus"
-            @click="open"
+            @click="() => open()"
           >
             Add files (experimental)
           </UButton>

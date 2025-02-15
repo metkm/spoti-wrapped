@@ -43,6 +43,7 @@ const {
 
     return response
   },
+  cache: 'force-cache',
   watch: [page],
 })
 
@@ -75,7 +76,7 @@ const items = computed(() =>
         :loading="status === 'pending'"
         square
         variant="ghost"
-        @click="refresh"
+        @click="() => refresh()"
       />
       <UInput
         v-model="query"
