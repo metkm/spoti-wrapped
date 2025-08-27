@@ -10,9 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div
-    class="flex relative shrink-0 w-full h-full rounded-lg shadow-md shadow-black/30 overflow-hidden transition-all first:snap-center"
-  >
+  <div class="flex relative h-96 rounded-lg overflow-hidden">
     <img
       :src="playlist.images?.at(0)?.url"
       class="absolute inset-0 w-full h-full object-cover"

@@ -7,11 +7,11 @@ import {
   type Theme,
 } from '@material/material-color-utilities'
 import ColorThief from 'colorthief'
-import { _primary } from '#tailwind-config/theme/colors'
 
 const updateCssVariable = (tone: number, level: number) => {
   const rgba = rgbaFromArgb(tone)
-  const rgbaString = `${rgba.r} ${rgba.g} ${rgba.b}`
+
+  const rgbaString = `rgb(${rgba.r}, ${rgba.g}, ${rgba.b})`
 
   document.documentElement.style.setProperty(
     `--color-primary-${level}`,
@@ -28,6 +28,7 @@ export const useTheme = () => {
     TonalPalette.fromInt(theme.value.schemes.dark.primary),
   )
   const colorMode = useColorMode()
+  const appConfig = useAppConfig()
 
   const scheme = computed(() => colorMode.value === 'dark' ? theme.value.schemes.dark : theme.value.schemes.light)
 
@@ -51,6 +52,7 @@ export const useTheme = () => {
 
     updateCssVariable(palette.value.tone(90), 50)
     updateCssVariable(palette.value.tone(10), 950)
+    appConfig.ui.colors.primary = 'primary'
   }
 
   return {

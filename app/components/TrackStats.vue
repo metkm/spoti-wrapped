@@ -37,7 +37,7 @@ const ids = computed(() => {
     return filtered.map(([id]) => id).join(',')
   }
 
-  return Object.keys(props.dates).slice(0, 20)
+  return Object.keys(props.dates).slice(0, 20).join(',')
 })
 
 const { data, status } = await useSpotifyFetch<ResponseTracks>('/tracks', {
@@ -84,14 +84,14 @@ const exportCsv = () => {
   >
     <template #top>
       <div class="flex flex-wrap items-end gap-2">
-        <UFormGroup label="Order by">
+        <UFormField label="Order by">
           <USelectMenu
             v-model="orderBy"
             placeholder="Order By"
-            :options="options"
+            :items="options"
             class="w-48"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UButton
           v-if="orderBy"

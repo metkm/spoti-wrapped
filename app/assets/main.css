@@ -1,26 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
-html {
-  font-family: "Inter", sans-serif;
-  @apply font-medium;
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+    @apply font-medium;
+  }
+
+  html,
+  body,
+  #nuxt {
+    @apply min-h-screen;
+    @apply w-screen overflow-x-hidden;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-200 dark:bg-[rgb(var(--color-primary-400))] rounded-full;
+  }
 }
 
-html, body, #nuxt {
-  @apply min-h-screen;
-  @apply w-screen overflow-x-hidden;
+:root {
+  /* --ui-primary: var(--color-green-400); */
 }
 
-::-webkit-scrollbar {
-  @apply w-2 h-2;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent rounded-full;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-neutral-200 dark:bg-[rgb(var(--color-primary-400))] rounded-full;
-}
+/* html {
+  --ui-primary: var(--color-green-400);
+} */
 
 .fade-enter-active,
 .fade-leave-active,
@@ -58,5 +73,5 @@ html, body, #nuxt {
     rgba(0, 0, 0, 1) 10%,
     rgba(0, 0, 0, 1) 90%,
     rgba(0, 0, 0, 0) 100%
-  )
+  );
 }
